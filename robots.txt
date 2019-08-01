@@ -1,0 +1,6 @@
+# robots.txt zu https://thewthr.app
+
+User-agent: *
+Disallow: 
+
+Sitemap: https://thewthr.app/sitemap.xml
