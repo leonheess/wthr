@@ -1,0 +1,51 @@
+doctype html
+html
+    head
+        title #{title}
+
+        meta(charset='utf-8')
+        meta(name='viewport' content='width=device-width, initial-scale=1')
+        meta(name='theme-color' content='#b13e8b')
+        meta(name='msapplication-navbutton-color' content='#b13e8b')
+        meta(name='apple-mobile-web-app-capable' content='yes')
+        meta(name='apple-mobile-web-app-status-bar-style' content='black-translucent')
+
+        meta(name='wot-verification' content='#')
+        meta(name='google-site-verification' content='#')
+
+        meta(name='description' content='#')
+        meta(property='og:title' content='#')
+        meta(property='og:description' content='#')
+        meta(property='og:image' content='https://#/img/preview.png')
+        meta(property='og:url' content='https://#')
+        meta(name='twitter:card' content='summary_large_image')
+        meta(name='twitter:creator' content='@leonheess')
+        meta(name='twitter:image' content='https://#/img/preview.png')
+        meta(name='keywords' content='#')
+
+        link(href='css/styles.css' rel='stylesheet')
+        link(href='img/favicon.ico' rel='icon')
+
+        script.
+            const data = new FormData();
+            navigator.geolocation.getCurrentPosition(pos => {
+                data.append('latitude', String(pos.coords.latitude));
+                data.append('longitude', String(pos.coords.longitude));
+            });
+            fetch('/', {method: 'POST', body: data}).then(() => console.log('done.')).catch(err => console.log(err));
+
+    body
+        #background
+        #wrapper
+            form(action="/" method="post")
+                input#search(name="location", placeholder="city or address")
+                #temp #{temperature}
+
+        footer
+            | &copy; Copyright #{new Date().getFullYear().toString()}
+            |  |&nbsp;
+            a(href='https://heess.me/impressum.html', target='_blank', rel='noopener') Impressum & Datenschutz
+            |  | Made by&nbsp;
+            a(href='https://twitter.com/leonheess', target='_blank', rel='noopener') Leon Heess
+            |  | Powered by&nbsp;
+            a(href='https://darksky.net/poweredby', target='_blank', rel='noopener') Dark Sky
