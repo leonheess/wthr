@@ -23,23 +23,23 @@ html
         meta(name='twitter:image' content='https://#/img/preview.png')
         meta(name='keywords' content='#')
 
-        link(href='css/styles.css' rel='stylesheet')
-        link(href='img/favicon.ico' rel='icon')
+        link(href='./styles.css' rel='stylesheet')
+        link(href='./img/favicon.ico' rel='icon')
 
-        script.
-            const data = new FormData();
-            navigator.geolocation.getCurrentPosition(pos => {
-                data.append('latitude', String(pos.coords.latitude));
-                data.append('longitude', String(pos.coords.longitude));
-            });
-            fetch('/', {method: 'POST', body: data}).then(() => console.log('done.')).catch(err => console.log(err));
+        script(src='https://heess.me/external/js/ie.js')
+        script(src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js')
+
+        script(src='./client.js')
 
     body
         #background
+            #soon
         #wrapper
-            form(action="/" method="post")
-                input#search(name="location", placeholder="city or address")
-                #temp #{temperature}
+            #container
+                input#search(name='location', placeholder='city or address')
+                button#submit Search!
+                button#locate(type='button') Locate Me!
+                #temp.default
 
         footer
             | &copy; Copyright #{new Date().getFullYear().toString()}
