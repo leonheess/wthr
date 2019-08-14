@@ -20,7 +20,7 @@ class location {
         return this;
     }
 
-    search(searchString) {
+    searchFor(searchString) {
         this.searchString = searchString;
         return this;
     }
@@ -36,7 +36,7 @@ class location {
             .then(data => resolve({
                 coords: {
                     lat: data.features[0].center[1],
-                    long: data.features[0].center[0]
+                    lng: data.features[0].center[0]
                 },
                 error: null
             }))

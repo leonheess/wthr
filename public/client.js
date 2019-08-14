@@ -8,6 +8,7 @@ window.onload = () => {
     // init event listeners
     searchEl.addEventListener('change', () => search());
     document.getElementById('submit').addEventListener('click', () => search());
+    document.getElementById('submit').addEventListener('keydown', (e) => {if (e.key === 'Enter') search()});
     document.getElementById('locate').addEventListener('click', () => {
         if (locatable) {
             geolocate();
@@ -22,11 +23,13 @@ window.onload = () => {
     // connect to socket
     let socket = io.connect('http://localhost:7000');
     socket.on('update', data => {
+        // console.log(data);
         if (data.error || !data.text || !data.temp) {
             console.log(data.error);
             tempEl.textContent = 'Something went wrong :( - see console for details';
         } else {
             // update classes of background according to weather
+            bgEl.className = 'default';
             watch(data.timezone);
             switch (data.classes) {
                 case 'rain':
@@ -63,7 +66,7 @@ window.onload = () => {
 };
 
 function search() {
-    document.getElementById('temp').classList.remove('appeared');
+    tempEl.classList.remove('appeared');
 
     const data = new FormData();
     data.append('input', searchEl.value);
@@ -82,6 +85,8 @@ function search() {
 }
 
 function geolocate() {
+    tempEl.classList.remove('appeared');
+
     // position getter
     let getPosition = (options) => {
         return new Promise((resolve, reject) => {

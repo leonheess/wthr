@@ -1,5 +1,4 @@
 const fetch = require('node-fetch');
-const locationWorker = require('./location');
 
 class weather {
     constructor(apiKey) {
@@ -20,22 +19,6 @@ class weather {
         this.lat = parseFloat(lat);
         this.long = parseFloat(lng);
         return this;
-    }
-
-    city({ searchString, key }) {
-        let promise = new Promise((resolve, reject) => {
-            new locationWorker(key).search(searchString).getCoords()
-            .then(locationData => {
-                this.coords({lat: locationData.coords.lat, lng: locationData.coords.long});
-                resolve();
-            })
-            .catch(() => {
-                this.lat  = null;
-                this.long = null;
-                reject();
-            })
-        });
-
     }
 
     metric(bool) {

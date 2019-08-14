@@ -1,13 +1,15 @@
 require('dotenv').config();
 
-const weatherWorker = require('./workers/weather');
+const weatherWrapper = require('./wrappers/weather');
+const locationWrapper = require('./wrappers/location');
 const express = require('express');
 
 const app = express();
 const upload = require('multer')();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
-const weather = new weatherWorker(process.env.DARK_SKY_API);
+const weather  = new weatherWrapper(process.env.DARK_SKY_API);
+const location = new locationWrapper(process.env.MAPBOX_API);
 
 // start server
 server.listen(process.env.PORT, () => console.log(`Express running → PORT ${server.address().port}`));
@@ -33,11 +35,15 @@ io.on('connection', () => console.log(`Socket.io running → PORT ${server.addre
 
 // react to post request by client
 app.post('/', upload.none(), (req, res) => {
+    console.log(`Request received: ${JSON.stringify(req.body)}`);
+
     let weatherPromise;
     if (req.body.latitude && req.body.longitude) {
         weatherPromise = weather.coords({lat: req.body.latitude, lng: req.body.longitude}).metric(true).getWeather();
     } else if (req.body.input) {
-        weatherPromise = weather.city({searchString: req.body.input, key: process.env.MAPBOX_API}).metric(true).getWeather();
+        weatherPromise = new Promise(resolve => {
+            location.searchFor(req.body.input).getCoords().then(locData => resolve(weather.coords(locData.coords).metric(true).getWeather()));
+        });
     } else {
         weatherPromise = Promise.reject({ error: 'Aborted due to unexpected POST-Body: ' + req.body});
     }
