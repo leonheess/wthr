@@ -64,6 +64,7 @@ class weather {
                 temp: Math.round(parseInt(data.currently.temperature)),
                 classes: data.currently.icon,
                 text: data.currently.summary,
+                timezone: data.timezone,
                 error: null
             }))
             .catch(err => reject({

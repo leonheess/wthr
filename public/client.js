@@ -27,7 +27,7 @@ window.onload = () => {
             tempEl.textContent = 'Something went wrong :( - see console for details';
         } else {
             // update classes of background according to weather
-            watch();
+            watch(data.timezone);
             switch (data.classes) {
                 case 'rain':
                 case 'sleet':
@@ -51,8 +51,8 @@ window.onload = () => {
     });
 
     // create clouds
-    let topValues  = randomFromIntervalButSpread(-750, -600, 20);
-    let leftValues = randomFromIntervalButSpread(-500, window.innerWidth+500, 20);
+    let topValues = randomFromIntervalButSpread(-750, -600, 20);
+    let leftValues = randomFromIntervalButSpread(-500, window.innerWidth + 500, 20);
     for (let i = 0; i < 20; i++) {
         let cloud = document.createElement('DIV');
         cloud.classList.add('cloud');
@@ -111,14 +111,9 @@ function geolocate() {
     });
 }
 
-// helper function
-function randomFromIntervalButSpread(min, max, steps) {
-    return new Array(steps).fill(0).map((n, i) => Math.floor(Math.random()*((max-min)/steps+1)+(i*(max-min))/steps+min)).sort(() => Math.random()-0.5);
-}
-
 // set time of day
-function watch() {
-    let timeOfDay = new Date().getHours();
+function watch(timezone) {
+    let timeOfDay = timezone ? changeTimezone(new Date(), timezone).getHours() : new Date().getHours();
     if (timeOfDay > 6 && timeOfDay < 21) {
         bgEl.classList.add('day');
         bgEl.classList.remove('night');
@@ -132,3 +127,15 @@ let updater = () => {
     watch();
     geolocate();
 };
+
+
+// helper functions
+function randomFromIntervalButSpread(min, max, steps) {
+    return new Array(steps).fill(0).map((n, i) => Math.floor(Math.random() * ((max - min) / steps + 1) + (i * (max - min)) / steps + min)).sort(() => Math.random() - 0.5);
+}
+
+function changeTimezone(date, ianatz) {
+    return new Date(date.getTime() + date.getTime() - (new Date(date.toLocaleString('en-US', {
+        timeZone: ianatz
+    }))).getTime());
+}
