@@ -26,7 +26,7 @@ app.use(express.json());
 // render view
 app.get('/', (req, res) => {
     res.render('index', {
-        title: `☀ ${process.env.npm_package_name} ☁`
+        title: `${process.env.npm_package_name} ☀`
     });
 });
 
