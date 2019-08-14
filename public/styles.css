@@ -48,8 +48,8 @@ body {
 }
 
 #inputs:hover, #inputs:focus-within {
-    background-color: rgba(255, 255, 255, 0.4);
-    box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.3);
 }
 
 #inputs button, #inputs #search {
@@ -107,7 +107,7 @@ input:-webkit-autofill {
 }
 
 #temp.appeared {
-    margin-top: 15px;
+    margin-top: .5%;
     opacity: 1;
 }
 
@@ -192,7 +192,11 @@ input:-webkit-autofill {
     right: 15px;
 }
 
-#background.cloudy > .cloud, #background.partly-cloudy > .cloud, #background.rain > .cloud,  #background.snow > .cloud {
+#background.cloudy > .cloud, #background.rain > .cloud,  #background.snow > .cloud {
+    display: block;
+}
+
+#background.partly-cloudy > .cloud:nth-child(even) {
     display: block;
 }
 

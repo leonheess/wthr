@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({path: __dirname + '/.env'});
 
 const weatherWrapper = require('./wrappers/weather');
 const locationWrapper = require('./wrappers/location');
@@ -26,7 +26,7 @@ app.use(express.json());
 // render view
 app.get('/', (req, res) => {
     res.render('index', {
-        title: `${process.env.npm_package_name} ☀`
+        title: `weather ☀`
     });
 });
 
