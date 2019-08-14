@@ -24,12 +24,12 @@ app.use(express.json());
 // render view
 app.get('/', (req, res) => {
     res.render('index', {
-        title: process.env.npm_package_name
+        title: `☀ ${process.env.npm_package_name} ☁`
     });
 });
 
 // start socket connection for continuous updates
-io.on('connection', socket => console.log(`Socket.io running → PORT ${server.address().port}`));
+io.on('connection', () => console.log(`Socket.io running → PORT ${server.address().port}`));
 
 // react to post request by client
 app.post('/', upload.none(), (req, res) => {

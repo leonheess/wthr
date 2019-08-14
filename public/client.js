@@ -5,7 +5,7 @@ window.onload = () => {
     tempEl = document.getElementById('temp');
     searchEl = document.getElementById('search');
 
-    // ini event listeners
+    // init event listeners
     searchEl.addEventListener('change', () => search());
     document.getElementById('submit').addEventListener('click', () => search());
     document.getElementById('locate').addEventListener('click', () => {

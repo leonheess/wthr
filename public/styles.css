@@ -37,33 +37,50 @@ body {
     margin: auto;
 }
 
-#container button {
-    all: unset;
-    cursor: pointer;
-}
-
-#search {
-    all: unset;
+#inputs {
     height: 45px;
-    font-size: 25px;
     width: 500px;
     border-radius: 50px;
-    padding: 7px 20px;
     background-color: rgba(255, 255, 255, 0.1);
     transition: .5s;
 }
 
-#search:hover, #search:focus {
+#inputs:hover, #inputs:focus-within {
     background-color: rgba(255, 255, 255, 0.2);
 }
 
-#search:after {
+#inputs button, #inputs #search {
+    all: unset;
+    height: 100%;
+    vertical-align: top;
+}
 
+#inputs button {
+    cursor: pointer;
+    width: 10%;
+    display: inline-grid;
+    place-items: center;
+}
+
+#inputs button img {
+    height: 70%;
+    margin: auto;
+}
+
+#inputs button#submit {
+    background-color: #fff;
+    border-radius: 0 50% 50% 0;
+}
+
+#inputs #search {
+    margin: 0 0 0 15px;
+    width: calc(80% - 15px);
+    font-size: 25px;
 }
 
 #temp {
     position: absolute;
-    font-size: 25px;
+    font-size: 20px;
     margin: -45px 0 0 15px;
     z-index: -1;
     opacity: 0;
@@ -88,7 +105,7 @@ body {
 }
 
 #background.default, #background.day {
-    background: linear-gradient(120deg, #fff097, #5eb0d1 80%);
+    background: linear-gradient(120deg, #fff097, #5eb0d1 55%);
 }
 
 #background.clear {
@@ -123,9 +140,9 @@ body {
 
 #background.day > #soon {
     background-color: #feffdf;
-    box-shadow: 0 0 0 35px rgba(254, 255, 223, 0.2),
-    0 0 0 70px rgba(254, 255, 223, 0.2),
-    0 0 0 105px rgba(254, 255, 223, 0.2);
+    box-shadow: 0 0 5px 35px rgba(254, 255, 223, 0.2),
+    0 0 10px 70px rgba(254, 255, 223, 0.2),
+    0 0 20px 105px rgba(254, 255, 223, 0.2);
 }
 
 #background.night > #soon {
@@ -141,12 +158,14 @@ body {
     opacity: .5;
     transition: 3s;
 }
+
 #background.night > #soon:before {
     height: 15px;
     width: 15px;
     bottom: 25px;
     right: 40px;
 }
+
 #background.night > #soon:after {
     height: 30px;
     width: 30px;

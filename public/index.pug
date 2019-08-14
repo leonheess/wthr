@@ -36,9 +36,12 @@ html
             #soon
         #wrapper
             #container
-                input#search(name='location', placeholder='city or address')
-                button#submit Search!
-                button#locate(type='button') Locate Me!
+                #inputs
+                    input#search(name='location', placeholder='New York...')
+                    button#locate(type='button')
+                        img(src='./img/coordinates.png')
+                    button#submit
+                        img(src='./img/coordinates.png')
                 #temp.default
 
         footer
