@@ -29,7 +29,7 @@ window.onload = () => {
         let socket = io.connect('https://thewthr.app', {secure: true, rejectUnauthorized: true});
         socket.on('update', data => {
             // console.log(data);
-            if (data.error || !data.text || !data.temp) {
+            if (data.error || !data.text || !data.temp || !data.unit) {
                 console.log(data.error);
                 tempEl.textContent = 'Something went wrong :( - see console for details';
             } else {
@@ -54,7 +54,7 @@ window.onload = () => {
                 }
 
                 tempEl.classList.add('appeared');
-                tempEl.textContent = `${data.text} and about ${data.temp}°C`;
+                tempEl.textContent = `${data.text} and about ${data.temp}°${data.unit}`;
                 searchEl.value = data.city || searchEl.value;
             }
         });
