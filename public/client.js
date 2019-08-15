@@ -55,6 +55,7 @@ window.onload = () => {
 
                 tempEl.classList.add('appeared');
                 tempEl.textContent = `${data.text} and about ${data.temp}°C`;
+                searchEl.value = data.city || searchEl.value;
             }
         });
 
@@ -72,6 +73,7 @@ window.onload = () => {
     }
 };
 
+// check for screen size on every resize
 window.onresize = () => {
     if (document.getElementById('background') && window.innerWidth < 700) {
         disclaimer();
@@ -80,6 +82,7 @@ window.onresize = () => {
     }
 };
 
+// post user input
 function search() {
     tempEl.classList.remove('appeared');
 
@@ -99,6 +102,7 @@ function search() {
 
 }
 
+// locate user and post coordinates
 function geolocate() {
     tempEl.classList.remove('appeared');
     searchEl.value = '';
