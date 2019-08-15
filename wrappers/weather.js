@@ -48,10 +48,11 @@ class weather {
                 classes: data.currently.icon,
                 text: data.currently.summary,
                 timezone: data.timezone,
+                unit: data.flags.units === 'si' ? 'C' : 'F',
                 error: null
             }))
             .catch(err => reject({
-                error: `forecast could not be retrieved. ${err.message}`
+                error: `weather could not be retrieved. ${err.message}`
             }))
         })
     }
