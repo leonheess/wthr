@@ -85,6 +85,11 @@ body {
     font-size: 25px;
 }
 
+::placeholder {
+  color: #fff;
+  opacity: .7;
+}
+
 @-webkit-keyframes autofill {
     to {
         color: #fff;
@@ -143,10 +148,6 @@ input:-webkit-autofill {
     background: linear-gradient(#000, #0F2129);
 }
 
-#background .cloud {
-    display: none;
-}
-
 #background > #soon {
     position: absolute;
     height: 150px;
@@ -193,11 +194,11 @@ input:-webkit-autofill {
 }
 
 #background.cloudy > .cloud, #background.rain > .cloud,  #background.snow > .cloud {
-    display: block;
+    opacity: .5;
 }
 
 #background.partly-cloudy > .cloud:nth-child(even) {
-    display: block;
+    opacity: .5;
 }
 
 .cloud {
@@ -205,7 +206,8 @@ input:-webkit-autofill {
     height: 900px;
     position: absolute;
     background-color: #fff;
-    opacity: .5;
+    opacity: 0;
+    transition: opacity .5s;
     border-radius: 50%;
     animation: cloud 10s infinite alternate;
 }
