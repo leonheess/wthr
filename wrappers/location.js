@@ -8,7 +8,7 @@ class location {
         this.lat = null;
         this.searchString = null;
         this.getCoordsUrl   = () => `${url}/${this.searchString}.json?types=place&access_token=${this.accessToken}`;
-        this.getLocationUrl = () => `${url}/${longitude},${latitude}.json?types=place&access_token=${this.accessToken}`;
+        this.getLocationUrl = () => `${url}/${this.long},${this.lat}.json?types=place&access_token=${this.accessToken}`;
     }
 
     static isNotNull(value) {

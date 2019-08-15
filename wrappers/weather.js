@@ -5,9 +5,9 @@ class weather {
         this.apiKey = apiKey;
         this.long = null;
         this.lat = null;
-        this.unit = 'si';
-        this.queryArr = ['excludes=currently', `units=${this.unit}`];
-        this.getQuery = () => this.queryArr.join('&');
+        this.unit = null;
+        this.queryArr = ['excludes=currently'];
+        this.getQuery = () => this.queryArr.join('&') + `&units=${this.unit || 'si'}`;
         this.getUrl = () => `https://api.darksky.net/forecast/${this.apiKey}/${this.lat},${this.long}?${this.getQuery()}`;
     }
 
@@ -40,6 +40,8 @@ class weather {
             if (!weather.isNotNull(this.lat) || !weather.isNotNull(this.long)) {
                 reject("request is incomplete. Longitude or Latitude is missing.")
             }
+
+            console.log(`Request sent: ${this.getUrl()}`);
 
             fetch(this.getUrl())
             .then(response => response.json())

@@ -10,7 +10,7 @@ window.onload = () => {
 
         // init event listeners
         searchEl.addEventListener('change', () => search());
-        document.getElementById('switch').addEventListener('click', (event) => switch(event.target));
+        document.getElementById('switch').addEventListener('click', event => switchUnit(event.target));
         document.getElementById('submit').addEventListener('click', () => search());
         document.getElementById('submit').addEventListener('keydown', (e) => {
             if (e.key === 'Enter') search()
@@ -27,9 +27,9 @@ window.onload = () => {
         geolocate();
 
         // connect to socket
-        let socket = io.connect('https://thewthr.app', {secure: true, rejectUnauthorized: true});
+        let socket = io.connect('127.0.0.1:8443', {secure: true, rejectUnauthorized: true});
         socket.on('update', data => {
-            // console.log(data);
+             //console.log(data);
             if (data.error || !data.text || !data.temp || !data.unit) {
                 console.log(data.error);
                 tempEl.textContent = 'Something went wrong :( - see console for details';
@@ -87,20 +87,22 @@ window.onresize = () => {
 function search() {
     tempEl.classList.remove('appeared');
 
-    const data = new FormData();
-    data.append('input', searchEl.value);
-    data.append('metric', metric);
+    if (searchEl.value) {
+        const data = new FormData();
+        data.append('input', searchEl.value);
+        data.append('metric', metric);
 
-    fetch('/', {
-        method: 'POST',
-        body: data
-    }).then(response => {
-        if (!response.ok) {
-            throw Error('Data sent - Network response NOT OK');
-        } else {
-            console.log('Data sent - Network response OK')
-        }
-    }).catch(err => console.error(err.message));
+        fetch('/', {
+            method: 'POST',
+            body: data
+        }).then(response => {
+            if (!response.ok) {
+                throw Error('Data sent - Network response NOT OK');
+            }
+        }).catch(err => console.error(err.message));
+    } else {
+        alert('No search term entered. Please enter a city or press on the "Locate me!" icon to proceed.');
+    }
 
 }
 
@@ -129,8 +131,6 @@ function geolocate() {
         }).then(response => {
             if (!response.ok) {
                 throw Error('Data sent - Network response NOT OK');
-            } else {
-                //console.log('Data sent - Network response OK')
             }
         }).catch(err => console.error(err.message));
     }).catch(err => {
@@ -152,8 +152,8 @@ function watch(timezone) {
 }
 
 // switch units
-function switch(button) {
-    metric = !metric:
+function switchUnit(button) {
+    metric = !metric;
     button.textContent = metric ? '°C' : '°F';
 }
 

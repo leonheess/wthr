@@ -46,14 +46,14 @@ app.post('/', upload.none(), (req, res) => {
         let crds = {lat: req.body.latitude, lng: req.body.longitude};
         weatherPromise = new Promise(resolve => {
             location.coords(crds).getLocation().then(locData => {
-                let data = weather.coords(crds).metric(req.body.metric).getWeather();
+                let data = weather.coords(crds).metric(req.body.metric === 'true').getWeather();
                 data.city = locData.city;
                 resolve(data);
             });
         });
     } else if (req.body.input) {
         weatherPromise = new Promise(resolve => {
-            location.searchFor(req.body.input).getCoords().then(locData => resolve(weather.coords(locData.coords).metric(req.body.metric).getWeather()));
+            location.searchFor(req.body.input).getCoords().then(locData => resolve(weather.coords(locData.coords).metric(req.body.metric === 'true').getWeather()));
         });
     } else {
         weatherPromise = Promise.reject({ error: 'Aborted due to unexpected POST-Body: ' + req.body});
