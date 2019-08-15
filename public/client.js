@@ -1,4 +1,4 @@
-let latitude, longitude, bgEl, tempEl, searchEl, locatable = true;
+let latitude, longitude, bgEl, tempEl, searchEl, locatable = true, metric = true;
 
 window.onload = () => {
     if (window.innerWidth < 700) {
@@ -10,6 +10,7 @@ window.onload = () => {
 
         // init event listeners
         searchEl.addEventListener('change', () => search());
+        document.getElementById('switch').addEventListener('click', (event) => switch(event.target));
         document.getElementById('submit').addEventListener('click', () => search());
         document.getElementById('submit').addEventListener('keydown', (e) => {
             if (e.key === 'Enter') search()
@@ -88,6 +89,7 @@ function search() {
 
     const data = new FormData();
     data.append('input', searchEl.value);
+    data.append('metric', metric);
 
     fetch('/', {
         method: 'POST',
@@ -119,6 +121,7 @@ function geolocate() {
         const data = new FormData();
         data.append('latitude', String(pos.coords.latitude));
         data.append('longitude', String(pos.coords.longitude));
+        data.append('metric', metric);
 
         fetch('/', {
             method: 'POST',
@@ -146,6 +149,12 @@ function watch(timezone) {
         bgEl.classList.add('night');
         bgEl.classList.remove('day');
     }
+}
+
+// switch units
+function switch(button) {
+    metric = !metric:
+    button.textContent = metric ? '°C' : '°F';
 }
 
 // helper functions
