@@ -1,5 +1,6 @@
 require('dotenv').config({path: __dirname + '/.env'});
 
+const Sentry = require('@sentry/node');
 const weatherWrapper = require('./wrappers/weather');
 const locationWrapper = require('./wrappers/location');
 const express = require('express');
