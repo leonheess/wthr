@@ -1,4 +1,5 @@
 const fetch = require('node-fetch');
+const url = 'https://api.mapbox.com/geocoding/v5/mapbox.places';
 
 class location {
     constructor(accessToken) {
@@ -6,8 +7,8 @@ class location {
         this.long = null;
         this.lat = null;
         this.searchString = null;
-        this.getLocationUrl = () => `https://api.mapbox.com/geocoding/v5/mapbox.places/${this.searchString}.json?types=place&access_token=${this.accessToken}`;
-        this.getCoordsUrl   = () => `https://api.mapbox.com/geocoding/v5/mapbox.places/${this.searchString}.json?types=place&access_token=${this.accessToken}`;
+        this.getCoordsUrl   = () => `${url}/${this.searchString}.json?types=place&access_token=${this.accessToken}`;
+        this.getLocationUrl = () => `${url}/${longitude},${latitude}.json?types=place&access_token=${this.accessToken}`;
     }
 
     static isNotNull(value) {
@@ -55,7 +56,7 @@ class location {
             fetch(this.getLocationUrl())
             .then(response => response.json())
             .then(data => resolve({
-                city: data,
+                city: data.features.text,
                 error: null
             }))
             .catch(err => reject({
