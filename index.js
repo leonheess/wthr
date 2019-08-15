@@ -13,7 +13,7 @@ const weather  = new weatherWrapper(process.env.DARK_SKY_API);
 const location = new locationWrapper(process.env.MAPBOX_API);
 
 // start Sentry
-Sentry.init({ dsn: process.env.SENTRY });
+Sentry.init({ dsn: process.env.SENTRY_KEY });
 
 // start server
 server.listen(process.env.PORT, () => console.log(`Express running → PORT ${server.address().port}`));
