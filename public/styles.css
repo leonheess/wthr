@@ -79,9 +79,14 @@ body {
     width: 10%;
 }
 
+
+#inputs button#switch {
+    width: 10%;
+}
+
 #inputs #search {
     margin: 0 0 0 15px;
-    width: calc(78% - 15px);
+    width: calc(68% - 15px);
     font-size: 25px;
 }
 
