@@ -60,8 +60,7 @@ body {
 
 #inputs button {
     cursor: pointer;
-    display: inline-grid;
-    place-items: center;
+    text-align: center;
 }
 
 #inputs button img {
