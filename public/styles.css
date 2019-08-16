@@ -27,6 +27,11 @@ body {
     overflow: hidden;
 }
 
+h1 {
+    opacity: 0;
+    position: absolute;
+}
+
 #wrapper {
     display: grid;
     place-items: center;
