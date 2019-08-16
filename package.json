@@ -23,13 +23,13 @@
   },
   "homepage": "https://thwthr.app",
   "dependencies": {
+    "@sentry/node": "^5.6.1",
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
     "multer": "^1.4.2",
     "node-fetch": "^2.6.0",
     "pug": "^2.0.4",
-    "socket.io": "^2.2.0",
-    "@sentry/node": "^5.6.1"
+    "socket.io": "^2.2.0"
   },
   "devDependencies": {
     "nodemon": "^1.19.1"
