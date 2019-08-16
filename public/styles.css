@@ -1,5 +1,4 @@
-@charset "utf-8";
-* {
+@charset "utf-8"; * {
     box-sizing: border-box;
     font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, "sans-serif";
     margin: 0;
@@ -42,7 +41,7 @@ body {
     width: 500px;
     border-radius: 50px;
     background-color: rgba(255, 255, 255, 0.1);
-    transition: .5s;
+    transition: .3s;
     border: 1px solid #fff;
     overflow: hidden;
 }
@@ -63,14 +62,23 @@ body {
     text-align: center;
 }
 
+#inputs button#switch:hover {
+    font-size: 27px;
+}
+
+#inputs button:hover > * {
+    transform: scale(1.2);
+}
+
 #inputs button img {
-    height: 60%;
+    height: 50%;
     display: block;
     margin: auto;
 }
 
 #inputs button#submit {
     background-color: #fff;
+    box-shadow: 10px 10px 0px 0px #fff;
     width: 12%;
 }
 
@@ -81,7 +89,7 @@ body {
 
 #inputs button#switch {
     width: 5%;
-    font-size: 20px;
+    font-size: 22px;
 }
 
 #inputs #search {
@@ -91,8 +99,8 @@ body {
 }
 
 ::placeholder {
-  color: #fff;
-  opacity: .7;
+    color: #fff;
+    opacity: .7;
 }
 
 @-webkit-keyframes autofill {
@@ -165,9 +173,7 @@ input:-webkit-autofill {
 
 #background.day > #soon {
     background-color: #feffdf;
-    box-shadow: 0 0 5px 35px rgba(254, 255, 223, 0.2),
-    0 0 10px 70px rgba(254, 255, 223, 0.2),
-    0 0 20px 105px rgba(254, 255, 223, 0.2);
+    box-shadow: 0 0 5px 35px rgba(254, 255, 223, 0.2), 0 0 10px 70px rgba(254, 255, 223, 0.2), 0 0 20px 105px rgba(254, 255, 223, 0.2);
 }
 
 #background.night > #soon {
@@ -198,7 +204,7 @@ input:-webkit-autofill {
     right: 15px;
 }
 
-#background.cloudy > .cloud, #background.rain > .cloud,  #background.snow > .cloud {
+#background.cloudy > .cloud, #background.rain > .cloud, #background.snow > .cloud {
     opacity: .5;
 }
 
@@ -252,36 +258,11 @@ input:-webkit-autofill {
 
 @keyframes rain {
     0% {
-        box-shadow: #cccccc 30px 30px,
-                    #cccccc 40px 40px,
-                    #cccccc 50px 75px,
-                    #cccccc 55px 50px,
-                    #cccccc 70px 100px,
-                    #cccccc 80px 95px,
-                    #cccccc 110px 45px,
-                    #cccccc 75px 50px,
-                    #cccccc 80px 20px,
-                    #cccccc 65px 40px,
-                    #cccccc 100px 80px,
-                    #cccccc 45px 85px,
-                    #cccccc 95px 50px,
-                    #cccccc 90px 35px;
+        box-shadow: #cccccc 30px 30px, #cccccc 40px 40px, #cccccc 50px 75px, #cccccc 55px 50px, #cccccc 70px 100px, #cccccc 80px 95px, #cccccc 110px 45px, #cccccc 75px 50px, #cccccc 80px 20px, #cccccc 65px 40px, #cccccc 100px 80px, #cccccc 45px 85px, #cccccc 95px 50px, #cccccc 90px 35px;
     }
+
     100% {
-        box-shadow: #cccccc 30px 970px,
-                    #cccccc 40px 980px,
-                    #cccccc 50px 945px,
-                    #cccccc 55px 980px,
-                    #cccccc 70px 960px,
-                    #cccccc 80px 945px,
-                    #cccccc 110px 995px,
-                    #cccccc 75px 950px,
-                    #cccccc 80px 920px,
-                    #cccccc 65px 940px,
-                    #cccccc 100px 980px,
-                    #cccccc 45px 985px,
-                    #cccccc 95px 950px,
-                    #cccccc 90px 985px;
+        box-shadow: #cccccc 30px 970px, #cccccc 40px 980px, #cccccc 50px 945px, #cccccc 55px 980px, #cccccc 70px 960px, #cccccc 80px 945px, #cccccc 110px 995px, #cccccc 75px 950px, #cccccc 80px 920px, #cccccc 65px 940px, #cccccc 100px 980px, #cccccc 45px 985px, #cccccc 95px 950px, #cccccc 90px 985px;
     }
 }
 
