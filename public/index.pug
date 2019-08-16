@@ -13,15 +13,15 @@ html
         meta(name='wot-verification' content='#')
         meta(name='google-site-verification' content='#')
 
-        meta(name='description' content='#')
-        meta(property='og:title' content='#')
-        meta(property='og:description' content='#')
+        meta(name='description' content='The current weather at any location in a minimal format!')
+        meta(property='og:title' content=#{title})
+        meta(property='og:description' content='The current weather at any location in a minimal format!')
         meta(property='og:image' content='https://#/img/preview.png')
-        meta(property='og:url' content='https://#')
+        meta(property='og:url' content='https://thewthr.app')
         meta(name='twitter:card' content='summary_large_image')
         meta(name='twitter:creator' content='@leonheess')
         meta(name='twitter:image' content='https://#/img/preview.png')
-        meta(name='keywords' content='#')
+        meta(name='keywords' content='current, weather, location, minimal')
 
         link(href='./styles.css' rel='stylesheet')
         link(href='./img/favicon.ico' rel='icon')
@@ -32,6 +32,7 @@ html
         script(defer, src='./client.js')
 
     body
+        h1 The current weather at any location in a minimal format!
         #background
             #soon
         #wrapper
