@@ -258,7 +258,7 @@ input:-webkit-autofill {
     transform: translate(50px);
 }
 
-#background.rain > .cloud:before:nth-child(even), #background.rain > .cloud:after:nth-child(even) {
+#background.rain > .cloud:nth-child(even):before, #background.rain > .cloud:nth-child(even):after {
     animation-delay: .3s;
 }
 
