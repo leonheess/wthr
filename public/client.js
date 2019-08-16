@@ -27,11 +27,11 @@ window.onload = () => {
         geolocate();
 
         // connect to socket
-        let socket = io.connect('127.0.0.1:8443', {secure: true, rejectUnauthorized: true});
+        let socket = io.connect('https://thewthr.app', {secure: true, rejectUnauthorized: true});
         socket.on('update', data => {
-             //console.log(data);
+            //console.log(data);
             if (data.error || !data.text || !data.temp || !data.unit) {
-                console.log(data.error);
+                console.log(data.error || 'An unknown error occured.');
                 tempEl.textContent = 'Something went wrong :( - see console for details';
             } else {
                 // update classes of background according to weather
@@ -53,11 +53,10 @@ window.onload = () => {
                         bgEl.classList.add('partly-cloudy');
                         break;
                 }
-
-                tempEl.classList.add('appeared');
                 tempEl.textContent = `${data.text} and about ${data.temp}°${data.unit}`;
                 searchEl.value = data.city || searchEl.value;
             }
+            tempEl.classList.add('appeared');
         });
 
         // create clouds

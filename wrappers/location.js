@@ -56,7 +56,7 @@ class location {
             fetch(this.getLocationUrl())
             .then(response => response.json())
             .then(data => resolve({
-                city: data.features.text,
+                city: data.features[0].text,
                 error: null
             }))
             .catch(err => reject({

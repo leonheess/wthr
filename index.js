@@ -44,13 +44,9 @@ app.post('/', upload.none(), (req, res) => {
     let weatherPromise;
     if (req.body.latitude && req.body.longitude) {
         let crds = {lat: req.body.latitude, lng: req.body.longitude};
-        weatherPromise = new Promise(resolve => {
-            location.coords(crds).getLocation().then(locData => {
-                let data = weather.coords(crds).metric(req.body.metric === 'true').getWeather();
-                data.city = locData.city;
-                resolve(data);
-            });
-        });
+        weatherPromise = new Promise(resolve => location.coords(crds).getLocation()
+        .then(locData => weather.coords(crds).metric(req.body.metric === 'true').getWeather()
+        .then(weatherData => resolve({...weatherData, ...{city: locData.city}}))));
     } else if (req.body.input) {
         weatherPromise = new Promise(resolve => {
             location.searchFor(req.body.input).getCoords().then(locData => resolve(weather.coords(locData.coords).metric(req.body.metric === 'true').getWeather()));
