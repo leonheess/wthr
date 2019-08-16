@@ -76,20 +76,27 @@ h1 {
 }
 
 #inputs button img {
-    height: 50%;
     display: block;
     margin: auto;
 }
 
 #inputs button#submit {
-    background-color: #fff;
-    box-shadow: 10px 10px 0px 0px #fff;
+    overflow: hidden;
+    box-shadow: 10px 10px 0 0 #fff;
     width: 12%;
 }
 
+#inputs button#submit img {
+    height: 70%;
+    box-shadow: 0 0 0 100px #fff;
+}
+
 #inputs button#locate {
-    filter: invert(1);
     width: 10%;
+}
+
+#inputs button#locate img {
+    height: 50%;
 }
 
 #inputs button#switch {
