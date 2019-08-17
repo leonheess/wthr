@@ -57,7 +57,7 @@ app.post('/', upload.none(), (req, res) => {
 
     weatherPromise.then(weatherData => {
         io.emit('update', weatherData);
-        res.end();
+        res.end('POST Acknowledge');
     }, reject => {
         io.emit('update', reject);
         res.status(500).end();
