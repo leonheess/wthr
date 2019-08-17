@@ -2,7 +2,7 @@ let latitude, longitude, bgEl, tempEl, searchEl, locatable = true, metric = true
 
 window.onload = () => {
     if (window.innerWidth < 700) {
-        disclaimer();
+        displayDisclaimer();
     } else {
         bgEl = document.getElementById('background');
         tempEl = document.getElementById('temp');
@@ -53,7 +53,11 @@ window.onload = () => {
                         bgEl.classList.add('partly-cloudy');
                         break;
                 }
-                tempEl.textContent = `${data.text} and about ${data.temp}°${data.unit}`;
+                let newText = `${data.text} and about ${data.temp}°${data.unit}`;
+                if (tempEl.classList.contains('appeared') && tempEl.textContent !== newText) {
+                    tempEl.classList.remove('appeared');
+                }
+                tempEl.textContent = newText;
                 searchEl.value = data.city || searchEl.value;
             }
             tempEl.classList.add('appeared');
@@ -77,7 +81,7 @@ window.onload = () => {
 // check for screen size on every resize
 window.onresize = () => {
     if (document.getElementById('background') && window.innerWidth < 700) {
-        disclaimer();
+        displayDisclaimer();
     } else if (!document.getElementById('background')) {
         location.reload();
     }
@@ -168,7 +172,7 @@ function changeTimezone(date, ianatz) {
     }))).getTime());
 }
 
-function disclaimer() {
+function displayDisclaimer() {
     let vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--vh', `${vh}px`);
     document.body.innerHTML = '<div style="display:grid;align-items:center;justify-items:center;height:100vh;height:calc(var(--vh,1vh)*100);width:100vw;"><h1 style="color:#000;width:80vw;font-weight:400">Unfortunately this website is not available on small screens for the time being. Please resize the window or switch to another device.</h1></div>';
