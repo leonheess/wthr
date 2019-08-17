@@ -60,7 +60,8 @@ window.onload = () => {
         });
 
         // create clouds
-        let topValues = randomFromIntervalButSpread(-750, -600, 20);
+        let height = -window.innerHeight;
+        let topValues = randomFromIntervalButSpread(height*0.3, height*0.2, 20);
         let leftValues = randomFromIntervalButSpread(-500, window.innerWidth + 500, 20);
         for (let i = 0; i < 20; i++) {
             let cloud = document.createElement('DIV');
