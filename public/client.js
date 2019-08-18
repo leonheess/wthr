@@ -80,7 +80,7 @@ window.onresize = () => {
 function createClouds() {
     bgEl.querySelectorAll('.cloud').forEach(e => e.remove());
     let topValues = randomFromIntervalButSpread(-750, -600, 20);
-    let leftValues = randomFromIntervalButSpread(-500, window.innerWidth + 500, 20);
+    let leftValues = randomFromIntervalButSpread(-500, window.innerWidth - 500, 20);
     for (let i = 0; i < 20; i++) {
         let cloud = document.createElement('DIV');
         cloud.classList.add('cloud');
