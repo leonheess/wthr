@@ -1,4 +1,4 @@
-let latitude, longitude, bgEl, tempEl, searchEl, locatable = true, metric = true;
+let latitude, longitude, bgEl, tempEl, searchEl, locatable = true, metric = true, errorTemp = 'Something went wrong :(';
 
 window.onload = () => {
     if (window.innerWidth < 700) {
@@ -33,7 +33,7 @@ window.onload = () => {
             //console.log(data);
             if (data.error || !data.text || !data.temp || !data.unit) {
                 console.log(data.error || 'An unknown error occured.');
-                tempEl.textContent = 'Something went wrong :( - see console for details';
+                displayTemp(errorTemp);
             } else {
                 // update classes of background according to weather
                 bgEl.className = 'default';
@@ -55,22 +55,20 @@ window.onload = () => {
                         break;
                 }
                 let newText = `${data.text} and about ${data.temp}°${data.unit}`;
-                if (tempEl.classList.contains('appeared') && tempEl.textContent !== newText) {
-                    tempEl.classList.remove('appeared');
+                if (tempEl.textContent !== newText) {
+                    displayTemp(newText);
                 }
-                tempEl.textContent = newText;
                 searchEl.value = data.city || searchEl.value;
             }
-            tempEl.classList.add('appeared');
         });
     }
 };
 
 // check for screen size on every resize
 window.onresize = () => {
-    if (document.getElementById('background') && window.innerWidth < 700) {
+    if (bgEl && window.innerWidth < 700) {
         displayDisclaimer();
-    } else if (!document.getElementById('background')) {
+    } else if (!bgEl) {
         location.reload();
     } else {
         createClouds();
@@ -82,7 +80,7 @@ function createClouds() {
     bgEl.querySelectorAll('.cloud').forEach(e => e.remove());
     let topValues = randomFromIntervalButSpread(-750, -600, 20);
     let leftValues = randomFromIntervalButSpread(-500, window.innerWidth - 500, 20);
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < Math.ceil(window.innerWidth * 0.013); i++) {
         let cloud = document.createElement('DIV');
         cloud.classList.add('cloud');
         cloud.style.top = `${topValues[i] - 40000 / window.innerHeight}px`;
@@ -93,7 +91,7 @@ function createClouds() {
 
 // post user input
 function search() {
-    tempEl.classList.remove('appeared');
+    displayTemp('Loading...');
 
     if (searchEl.value) {
         const data = new FormData();
@@ -103,11 +101,7 @@ function search() {
         fetch('/', {
             method: 'POST',
             body: data
-        }).then(response => {
-            if (!response.ok) {
-                throw Error('Data sent - Network response NOT OK');
-            }
-        }).catch(err => console.error(err.message));
+        }).then(response => handleResponses(response)).catch(err => handleErrors(err));
     } else {
         alert('No search term entered. Please enter a city or press on the "Locate me!" icon to proceed.');
     }
@@ -116,7 +110,7 @@ function search() {
 
 // locate user and post coordinates
 function geolocate() {
-    tempEl.classList.remove('appeared');
+    displayTemp('Loading...');
     searchEl.value = '';
 
     // position getter
@@ -136,14 +130,11 @@ function geolocate() {
         fetch('/', {
             method: 'POST',
             body: data
-        }).then(response => {
-            if (!response.ok) {
-                throw Error('Data sent - Network response NOT OK');
-            }
-        }).catch(err => console.error(err.message));
+        }).then(response => handleResponses(response)).catch(err => handleErrors(err));
     }).catch(err => {
+        handleErrors(err);
         locatable = false;
-        console.error(err.message);
+        alert('Could not locate this machine. Try again or change the location settings.')
     });
 }
 
@@ -180,4 +171,24 @@ function displayDisclaimer() {
     let vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--vh', `${vh}px`);
     document.body.innerHTML = '<div style="display:grid;align-items:center;justify-items:center;height:100vh;height:calc(var(--vh,1vh)*100);width:100vw;"><h1 style="color:#000;width:80vw;font-weight:400">Unfortunately this website is not available on small screens for the time being. Please resize the window or switch to another device.</h1></div>';
+}
+
+function displayTemp(newText) {
+    tempEl.classList.remove('appeared');
+    setTimeout(() => {
+        tempEl.textContent = newText;
+        tempEl.classList.add('appeared');
+    }, 500);
+}
+
+function handleResponses(response) {
+    if (!response.ok) {
+        displayTemp(errorTemp);
+        throw Error('Data sent - Network response NOT OK: ' + response.statusText);
+    }
+}
+
+function handleErrors(err) {
+    console.error(err.message);
+    displayTemp(errorTemp);
 }
