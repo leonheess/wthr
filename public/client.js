@@ -25,6 +25,7 @@ window.onload = () => {
 
         watch();
         geolocate();
+        createClouds();
 
         // connect to socket
         let socket = io.connect('https://thewthr.app', {secure: true, rejectUnauthorized: true});
@@ -62,30 +63,32 @@ window.onload = () => {
             }
             tempEl.classList.add('appeared');
         });
-
-        // create clouds
-        let height = -window.innerHeight;
-        let topValues = randomFromIntervalButSpread(height*0.3, height*0.2, 20);
-        let leftValues = randomFromIntervalButSpread(-500, window.innerWidth + 500, 20);
-        for (let i = 0; i < 20; i++) {
-            let cloud = document.createElement('DIV');
-            cloud.classList.add('cloud');
-            cloud.style.top = `${topValues[i]}px`;
-            cloud.style.left = `${leftValues[i]}px`;
-            document.getElementById('background').append(cloud);
-        }
-
     }
 };
 
 // check for screen size on every resize
 window.onresize = () => {
+    createClouds();
     if (document.getElementById('background') && window.innerWidth < 700) {
         displayDisclaimer();
     } else if (!document.getElementById('background')) {
         location.reload();
     }
 };
+
+// creat clouds
+function createClouds() {
+    bgEl.querySelectorAll('.cloud').forEach(e => e.remove());
+    let topValues = randomFromIntervalButSpread(-750, -600, 20);
+    let leftValues = randomFromIntervalButSpread(-500, window.innerWidth + 500, 20);
+    for (let i = 0; i < 20; i++) {
+        let cloud = document.createElement('DIV');
+        cloud.classList.add('cloud');
+        cloud.style.top = `${topValues[i] - 40000 / window.innerHeight}px`;
+        cloud.style.left = `${leftValues[i]}px`;
+        bgEl.append(cloud);
+    }
+}
 
 // post user input
 function search() {
@@ -116,7 +119,7 @@ function geolocate() {
     searchEl.value = '';
 
     // position getter
-    let getPosition = (options) => {
+    let getPosition = options => {
         return new Promise((resolve, reject) => {
             navigator.geolocation.getCurrentPosition(resolve, reject, options);
         });

@@ -57,6 +57,7 @@ app.post('/', upload.none(), (req, res) => {
 
     weatherPromise.then(weatherData => {
         io.emit('update', weatherData);
+        console.log(`Answer sent: ${JSON.stringify(weatherData)}`);
         res.end('POST Acknowledge');
     }, reject => {
         io.emit('update', reject);
