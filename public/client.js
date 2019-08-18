@@ -68,11 +68,12 @@ window.onload = () => {
 
 // check for screen size on every resize
 window.onresize = () => {
-    createClouds();
     if (document.getElementById('background') && window.innerWidth < 700) {
         displayDisclaimer();
     } else if (!document.getElementById('background')) {
         location.reload();
+    } else {
+        createClouds();
     }
 };
 
