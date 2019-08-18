@@ -1,4 +1,6 @@
-let latitude, longitude, bgEl, tempEl, searchEl, locatable = true, metric = true, errorTemp = 'Something went wrong :(';
+let latitude, longitude, bgEl, tempEl, searchEl, locatable = true, metric = true;
+const appUrl = 'https://thewthr.app', errorTemp = 'Something went wrong :(',
+    locateError = 'Locating failed because it is not supported by your machine or because it was denied by the user or the user settings.';
 
 window.onload = () => {
     if (window.innerWidth < 700) {
@@ -19,48 +21,15 @@ window.onload = () => {
             if (locatable) {
                 geolocate();
             } else {
-                alert('Locating failed because it is not supported by your machine or because it was denied by the user or the user settings.');
+                alert(locateError);
             }
         });
 
+        // start inner workings
+        connect();
         watch();
         geolocate();
         createClouds();
-
-        // connect to socket
-        let socket = io.connect('https://thewthr.app', {secure: true, rejectUnauthorized: true});
-        socket.on('update', data => {
-            //console.log(data);
-            if (data.error || !data.text || !data.temp || !data.unit) {
-                console.log(data.error || 'An unknown error occured.');
-                displayTemp(errorTemp);
-            } else {
-                // update classes of background according to weather
-                bgEl.className = 'default';
-                watch(data.timezone);
-                switch (data.classes) {
-                    case 'rain':
-                    case 'sleet':
-                        bgEl.classList.add('rain');
-                        break;
-                    case 'snow':
-                        bgEl.classList.add('snow');
-                        break;
-                    case 'cloudy':
-                        bgEl.classList.add('cloudy');
-                        break;
-                    case 'partly-cloudy-day':
-                    case 'partly-cloudy-night':
-                        bgEl.classList.add('partly-cloudy');
-                        break;
-                }
-                let newText = `${data.text} and about ${data.temp}°${data.unit}`;
-                if (tempEl.textContent !== newText) {
-                    displayTemp(newText);
-                }
-                searchEl.value = data.city || searchEl.value;
-            }
-        });
     }
 };
 
@@ -75,6 +44,45 @@ window.onresize = () => {
         createClouds();
     }
 };
+
+// connect to backend
+function connect() {
+    let socket = io.connect(appUrl, {secure: true, rejectUnauthorized: true});
+    socket.on('update', data => {
+        //console.log(data);
+        if (data.error || !data.text || !data.temp || !data.unit) {
+            console.log(data.error || 'An unknown error occured.');
+            displayTemp(errorTemp);
+        } else {
+            // update classes of background according to weather
+            bgEl.className = 'default';
+            watch(data.timezone);
+            switch (data.classes) {
+                case 'rain':
+                case 'sleet':
+                    bgEl.classList.add('rain');
+                    break;
+                case 'snow':
+                    bgEl.classList.add('snow');
+                    break;
+                case 'cloudy':
+                    bgEl.classList.add('cloudy');
+                    break;
+                case 'partly-cloudy-day':
+                case 'partly-cloudy-night':
+                    bgEl.classList.add('partly-cloudy');
+                    break;
+            }
+            let newText = `${data.text} and about ${data.temp}°${data.unit}`;
+            displayTemp(newText);
+            searchEl.value = data.city || searchEl.value;
+        }
+    });
+    socket.on('connect_error', err => handleErrors(err));
+    socket.on('disconnect', err => handleErrors(err));
+    socket.on('connect_failed', err => handleErrors(err));
+}
+
 
 // creat clouds
 function createClouds() {
@@ -92,7 +100,7 @@ function createClouds() {
 
 // post user input
 function search() {
-    displayTemp('Loading...');
+    displayTemp('Loading<span>.</span><span>.</span><span>.</span>');
 
     if (searchEl.value) {
         const data = new FormData();
@@ -111,7 +119,7 @@ function search() {
 
 // locate user and post coordinates
 function geolocate() {
-    displayTemp('Loading...');
+    displayTemp('Loading<span>.</span><span>.</span><span>.</span>');
     searchEl.value = '';
 
     // position getter
@@ -135,7 +143,7 @@ function geolocate() {
     }).catch(err => {
         handleErrors(err);
         locatable = false;
-        alert('Could not locate this machine. Try again or change the location settings.')
+        alert(locateError);
     });
 }
 
@@ -175,11 +183,13 @@ function displayDisclaimer() {
 }
 
 function displayTemp(newText) {
-    tempEl.classList.remove('appeared');
-    setTimeout(() => {
-        tempEl.textContent = newText;
-        tempEl.classList.add('appeared');
-    }, 500);
+    if (tempEl.textContent !== newText) {
+        tempEl.classList.remove('appeared');
+        setTimeout(() => {
+            tempEl.innerHTML = newText;
+            tempEl.classList.add('appeared');
+        }, 500);
+    }
 }
 
 function handleResponses(response) {
@@ -190,6 +200,6 @@ function handleResponses(response) {
 }
 
 function handleErrors(err) {
-    console.error(err.message);
     displayTemp(errorTemp);
+    console.error(err.message);
 }
