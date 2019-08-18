@@ -1,4 +1,5 @@
-@charset "utf-8"; * {
+@charset "utf-8";
+* {
     box-sizing: border-box;
     font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, "sans-serif";
     margin: 0;
@@ -123,8 +124,8 @@ h1 {
 }
 
 input:-webkit-autofill {
-    -webkit-animation-name: autofill!important;
-    -webkit-animation-fill-mode: both!important;
+    -webkit-animation-name: autofill !important;
+    -webkit-animation-fill-mode: both !important;
 }
 
 #temp {
@@ -140,6 +141,25 @@ input:-webkit-autofill {
     margin-top: .5%;
     opacity: 1;
 }
+
+#temp span {
+    animation-duration: 1.3s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+#temp span:nth-child(1) {
+    animation-name: first;
+}
+
+#temp span:nth-child(2) {
+    animation-name: second;
+}
+
+#temp span:nth-child(3) {
+    animation-name: third;
+}
+
 
 /* background styling */
 #background {
@@ -276,24 +296,6 @@ input:-webkit-autofill {
     100% {
         box-shadow: #cccccc 30px 970px, #cccccc 40px 980px, #cccccc 50px 945px, #cccccc 55px 980px, #cccccc 70px 960px, #cccccc 80px 945px, #cccccc 110px 995px, #cccccc 75px 950px, #cccccc 80px 920px, #cccccc 65px 940px, #cccccc 100px 980px, #cccccc 45px 985px, #cccccc 95px 950px, #cccccc 90px 985px;
     }
-}
-
-#temp span {
-    animation-duration: 1.3s;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
-}
-
-#temp span:nth-child(1) {
-    animation-name: first;
-}
-
-#temp span:nth-child(2) {
-    animation-name: second;
-}
-
-#temp span:nth-child(3) {
-    animation-name: third;
 }
 
 @keyframes first {
