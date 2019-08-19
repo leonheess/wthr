@@ -66,6 +66,7 @@ h1 {
 #inputs button {
     cursor: pointer;
     text-align: center;
+    line-height: 27px;
 }
 
 #inputs button#switch:hover {
@@ -73,7 +74,7 @@ h1 {
 }
 
 #inputs button:hover > * {
-    transform: scale(1.2);
+    transform: scale(1.15);
 }
 
 #inputs button img {
