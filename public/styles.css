@@ -90,7 +90,7 @@ h1 {
 
 #inputs button#submit img {
     height: 70%;
-    box-shadow: 0 0 0 100px #fff;
+    box-shadow: 0 0 0 100px #fff, 0 0 0 2px #fff inset;
 }
 
 #inputs button#locate {
