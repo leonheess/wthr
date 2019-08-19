@@ -84,12 +84,16 @@ function connect() {
 }
 
 
-// creat clouds
+// create clouds
 function createClouds() {
+    // remove old clouds
     bgEl.querySelectorAll('.cloud').forEach(e => e.remove());
-    let topValues = randomFromIntervalButSpread(-750, -600, 20);
-    let leftValues = randomFromIntervalButSpread(-500, window.innerWidth - 500, 20);
-    for (let i = 0; i < Math.ceil(window.innerWidth * 0.013); i++) {
+    
+    // create new clouds
+    let cloudAmount = Math.ceil(window.innerWidth * 0.013);
+    let topValues = randomFromIntervalButSpread(-750, -600, cloudAmount);
+    let leftValues = randomFromIntervalButSpread(-500, window.innerWidth - 500, cloudAmount);
+    for (let i = 0; i < cloudAmount; i++) {
         let cloud = document.createElement('DIV');
         cloud.classList.add('cloud');
         cloud.style.top = `${topValues[i] - 40000 / window.innerHeight}px`;
