@@ -3,9 +3,6 @@ const appUrl = 'https://thewthr.app', errorTemp = 'Something went wrong :(',
     locateError = 'Locating failed because it is not supported by your machine or because it was denied by the user or the user settings.';
 
 window.onload = () => {
-    if (window.innerWidth < 700) {
-        displayDisclaimer();
-    } else {
         bgEl = document.getElementById('background');
         tempEl = document.getElementById('temp');
         searchEl = document.getElementById('search');
@@ -30,20 +27,10 @@ window.onload = () => {
         watch();
         geolocate();
         createClouds();
-    }
 };
 
 // check for screen size on every resize
-window.onresize = () => {
-    let el = document.getElementById('background');
-    if (el && window.innerWidth < 700) {
-        displayDisclaimer();
-    } else if (!el) {
-        location.reload();
-    } else {
-        createClouds();
-    }
-};
+window.onresize = () => createClouds();
 
 // connect to backend
 function connect() {
@@ -178,12 +165,6 @@ function changeTimezone(date, ianatz) {
     return new Date(date.getTime() + date.getTime() - (new Date(date.toLocaleString('en-US', {
         timeZone: ianatz
     }))).getTime());
-}
-
-function displayDisclaimer() {
-    let vh = window.innerHeight * 0.01;
-    document.documentElement.style.setProperty('--vh', `${vh}px`);
-    document.body.innerHTML = '<div style="display:grid;align-items:center;justify-items:center;height:100vh;height:calc(var(--vh,1vh)*100);width:100vw;"><h1 style="color:#000;width:80vw;font-weight:400">Unfortunately this website is not available on small screens for the time being. Please resize the window or switch to another device.</h1></div>';
 }
 
 function displayTemp(newText) {

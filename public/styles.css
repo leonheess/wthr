@@ -22,10 +22,20 @@ a {
     outline: 0;
 }
 
+:focus {
+    outline: none !important;
+}
+
+::-moz-focus-inner {
+    border: 0 !important;
+}
+
 body {
     height: 100vh;
+    min-height: 600px;
     width: 100vw;
     overflow: hidden;
+    position: relative;
 }
 
 h1 {
@@ -36,25 +46,32 @@ h1 {
 #wrapper {
     display: grid;
     place-items: center;
-    width: 70%;
-    max-width: 1200px;
-    min-height: 97.5vh;
+    width: 100%;
+    height: 97.5%;
+    max-height: calc(100% - 20px);
     margin: auto;
 }
 
+#container {
+    width: 50%;
+    max-width: 600px;
+}
+
 #inputs {
+    display: flex;
     height: 45px;
-    width: 500px;
+    width: 100%;
     border-radius: 50px;
     background-color: rgba(255, 255, 255, 0.1);
     transition: .3s;
     border: 1px solid #fff;
     overflow: hidden;
+    margin: auto;
 }
 
 #inputs:hover, #inputs:focus-within {
-    background-color: rgba(255, 255, 255, 0.3);
-    box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.2);
 }
 
 #inputs button, #inputs #search {
@@ -73,7 +90,7 @@ h1 {
     font-size: 27px;
 }
 
-#inputs button:hover > * {
+#inputs button:hover > img {
     transform: scale(1.15);
 }
 
@@ -86,15 +103,18 @@ h1 {
     overflow: hidden;
     box-shadow: 10px 10px 0 0 #fff;
     width: 12%;
+    min-width: 60px;
 }
 
-#inputs button#submit img {
+#inputs button#submit > img {
     height: 70%;
-    box-shadow: 0 0 0 100px #fff, 0 0 0 2px #fff inset;
+    box-shadow: 0 0 0 50px #fff,
+    0 0 1px 2px #fff inset;
 }
 
 #inputs button#locate {
     width: 10%;
+    min-width: 40px;
 }
 
 #inputs button#locate img {
@@ -103,12 +123,13 @@ h1 {
 
 #inputs button#switch {
     width: 5%;
+    min-width: 25px;
     font-size: 22px;
 }
 
 #inputs #search {
     margin: 0 0 0 15px;
-    width: calc(73% - 15px);
+    flex: 2;
     font-size: 25px;
 }
 
@@ -139,7 +160,7 @@ input:-webkit-autofill {
 }
 
 #temp.appeared {
-    margin-top: .5%;
+    margin-top: 10px;
     opacity: 1;
 }
 
@@ -161,13 +182,12 @@ input:-webkit-autofill {
     animation-name: third;
 }
 
-
 /* background styling */
 #background {
     z-index: -1;
     position: absolute;
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 100%;
     top: 0;
     left: 0;
     right: 0;
@@ -196,12 +216,12 @@ input:-webkit-autofill {
 
 #background > #soon {
     position: absolute;
-    height: 150px;
-    width: 150px;
+    height: 17vh;
+    width: 17vh;
     border-radius: 50%;
-    top: 125px;
-    left: 150px;
-    transition: .7s;
+    top: 10%;
+    left: 15%;
+    transition: background-color .7s, box-shadow .7s;
 }
 
 #background.day > #soon {
@@ -245,7 +265,7 @@ input:-webkit-autofill {
     opacity: .5;
 }
 
-.cloud {
+#background > .cloud {
     width: 900px;
     height: 900px;
     position: absolute;
@@ -256,7 +276,7 @@ input:-webkit-autofill {
     animation: cloud 10s infinite alternate;
 }
 
-.cloud:nth-child(even) {
+#background > .cloud:nth-child(even) {
     animation-delay: 3s;
 }
 
@@ -330,9 +350,75 @@ input:-webkit-autofill {
     }
 }
 
-
 footer {
     text-align: center;
     height: 2.5vh;
+    min-height: 20px;
     font-size: 12px;
+}
+
+@media screen and (max-width: 1000px) {
+    #container {
+        width: 75%;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    #wrapper {
+        max-height: calc(100% - 15px);
+    }
+
+    #container {
+        width: 90%;
+    }
+
+    #inputs {
+        height: 40px;
+    }
+
+    #inputs button#switch {
+        font-size: 20px;
+    }
+
+    #inputs button#switch:hover {
+        font-size: 20px;
+    }
+
+    #inputs button:hover > img {
+        transform: none;
+    }
+
+    #inputs #search {
+        font-size: 20px;
+    }
+
+    #temp {
+        font-size: 18px;
+    }
+
+    footer {
+        font-size: 10px;
+        min-height: 15px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    footer {
+        font-size: 8px;
+    }
+}
+
+@media screen and (max-width: 350px) {
+    #wrapper {
+        max-height: calc(100% - 10px);
+    }
+
+    #container {
+        width: 95%;
+    }
+
+    footer {
+        font-size: 6px;
+        min-height: 10px;
+    }
 }
