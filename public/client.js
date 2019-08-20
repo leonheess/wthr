@@ -25,7 +25,7 @@ window.onload = () => {
         // start inner workings
         connect();
         watch();
-        geolocate();
+    geolocate(true);
         createClouds();
 };
 
@@ -109,7 +109,7 @@ function search() {
 }
 
 // locate user and post coordinates
-function geolocate() {
+function geolocate(suppress = false) {
     displayTemp('Loading<span>.</span><span>.</span><span>.</span>');
 
     // position getter
@@ -129,11 +129,17 @@ function geolocate() {
         fetch('/', {
             method: 'POST',
             body: data
-        }).then(response => handleResponses(response)).catch(err => handleErrors(err));
+        }).then(response => handleResponses(response)).catch(err => {
+            if (!suppress) {
+                handleErrors(err)
+            }
+        });
     }).catch(err => {
         handleErrors(err);
         locatable = false;
-        alert(locateError);
+        if (!suppress) {
+            alert(locateError);
+        }
     });
 }
 
