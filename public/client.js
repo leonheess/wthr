@@ -29,8 +29,7 @@ function connect() {
     socket.on('update', data => {
         //console.log(data);
         if (data.error || !data.text || !data.temp || !data.unit) {
-            console.log(data.error || 'An unknown error occured.');
-            displayTemp(errorTemp);
+            handleErrors(data.error)
         } else {
             // update classes of background according to weather
             bgEl.className = 'default';
@@ -51,8 +50,7 @@ function connect() {
                     bgEl.classList.add('partly-cloudy');
                     break;
             }
-            let newText = `${data.text} and about ${data.temp}°${data.unit}`;
-            displayTemp(newText);
+            displayTemp(`${data.text} and about ${data.temp}°${data.unit}`);
             searchEl.value = data.city || searchEl.value;
         }
     });
@@ -180,5 +178,5 @@ function handleResponses(response) {
 function handleErrors(err) {
     displayTemp(errorTemp);
     searchEl.value = '';
-    console.error(err.message);
+    console.error(err.message || 'An unknown error occured.');
 }
