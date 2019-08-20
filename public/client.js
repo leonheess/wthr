@@ -1,26 +1,23 @@
 let latitude, longitude, bgEl, tempEl, searchEl, metric = true;
-const appUrl = 'https://thewthr.app', errorTemp = 'Something went wrong :(',
-    locateError = 'Locating failed because it is not supported by your machine or because it was denied by the user or the user settings.';
+const appUrl = 'https://thewthr.app', errorTemp = 'Something went wrong :(';
 
 window.onload = () => {
-        bgEl = document.getElementById('background');
-        tempEl = document.getElementById('temp');
-        searchEl = document.getElementById('search');
+    bgEl = document.getElementById('background');
+    tempEl = document.getElementById('temp');
+    searchEl = document.getElementById('search');
 
-        // init event listeners
-        searchEl.addEventListener('change', () => search());
-        document.getElementById('switch').addEventListener('click', event => switchUnit(event.target));
-        document.getElementById('submit').addEventListener('click', () => search());
-        document.getElementById('submit').addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') search()
-        });
+    // init event listeners
+    document.getElementById('switch').addEventListener('click', event => switchUnit(event.target));
     document.getElementById('locate').addEventListener('click', () => geolocate());
-
-        // start inner workings
-        connect();
-        watch();
+    document.getElementById('submit').addEventListener('click', () => search());
+    document.getElementById('submit').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') search()
+    });
+    // start inner workings
+    connect();
+    watch();
     geolocate(true);
-        createClouds();
+    createClouds();
 };
 
 // check for screen size on every resize
@@ -69,7 +66,7 @@ function connect() {
 function createClouds() {
     // remove old clouds
     bgEl.querySelectorAll('.cloud').forEach(e => e.remove());
-    
+
     // create new clouds
     let cloudAmount = Math.ceil(window.innerWidth * 0.013);
     let topValues = randomFromIntervalButSpread(-750, -600, cloudAmount);
@@ -129,7 +126,7 @@ function geolocate(suppress = false) {
     }).catch(err => {
         if (!suppress) {
             handleErrors(err);
-            alert(locateError);
+            alert('Locating failed because it is not supported by your machine or because it was denied by the user or the user settings.');
         }
     });
 }
