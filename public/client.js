@@ -1,4 +1,4 @@
-let latitude, longitude, bgEl, tempEl, searchEl, locatable = true, metric = true;
+let latitude, longitude, bgEl, tempEl, searchEl, metric = true;
 const appUrl = 'https://thewthr.app', errorTemp = 'Something went wrong :(',
     locateError = 'Locating failed because it is not supported by your machine or because it was denied by the user or the user settings.';
 
@@ -14,13 +14,7 @@ window.onload = () => {
         document.getElementById('submit').addEventListener('keydown', (e) => {
             if (e.key === 'Enter') search()
         });
-        document.getElementById('locate').addEventListener('click', () => {
-            if (locatable) {
-                geolocate();
-            } else {
-                alert(locateError);
-            }
-        });
+    document.getElementById('locate').addEventListener('click', () => geolocate());
 
         // start inner workings
         connect();
@@ -133,7 +127,6 @@ function geolocate(suppress = false) {
             body: data
         }).then(response => handleResponses(response)).catch(err => handleErrors(err));
     }).catch(err => {
-        locatable = false;
         if (!suppress) {
             handleErrors(err);
             alert(locateError);
@@ -189,5 +182,6 @@ function handleResponses(response) {
 
 function handleErrors(err) {
     displayTemp(errorTemp);
+    searchEl.value = '';
     console.error(err.message);
 }
