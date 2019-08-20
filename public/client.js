@@ -110,7 +110,9 @@ function search() {
 
 // locate user and post coordinates
 function geolocate(suppress = false) {
-    displayTemp('Loading<span>.</span><span>.</span><span>.</span>');
+    if (!suppress) {
+        displayTemp('Loading<span>.</span><span>.</span><span>.</span>');
+    }
 
     // position getter
     let getPosition = options => {
