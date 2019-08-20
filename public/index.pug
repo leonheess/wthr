@@ -1,5 +1,5 @@
 doctype html
-html
+html(lang='en')
     head
         title #{title}
 
@@ -40,9 +40,9 @@ html
                     input#search(type='text', placeholder='Enter City...', size='1')
                     button#switch(title='Switch Unit!') °C
                     button#locate(title='Locate Me!')
-                        img(src='./img/coordinates.png')
+                        img(src='./img/coordinates.png', alt='Locate Me!')
                     button#submit(title='Search!')
-                        img(src='./img/search.png')
+                        img(src='./img/search.png', alt='Search!')
                 #temp.default
 
         footer
