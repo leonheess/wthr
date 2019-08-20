@@ -129,15 +129,11 @@ function geolocate(suppress = false) {
         fetch('/', {
             method: 'POST',
             body: data
-        }).then(response => handleResponses(response)).catch(err => {
-            if (!suppress) {
-                handleErrors(err)
-            }
-        });
+        }).then(response => handleResponses(response)).catch(err => handleErrors(err));
     }).catch(err => {
-        handleErrors(err);
         locatable = false;
         if (!suppress) {
+            handleErrors(err);
             alert(locateError);
         }
     });
