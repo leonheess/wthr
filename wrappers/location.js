@@ -42,7 +42,7 @@ class location {
                 error: null
             }))
             .catch(err => reject({
-                error: `coordinates could not be retrieved. ${err.message}`
+                error: `Coordinates could not be retrieved. ${err.message}`
             }))
         })
     }
@@ -50,7 +50,7 @@ class location {
     getLocation() {
         return new Promise((resolve, reject) => {
             if (!location.isNotNull(this.lat) || !location.isNotNull(this.long)) {
-                reject("request is incomplete. Longitude or Latitude is missing.")
+                reject("Request is incomplete. Longitude or Latitude is missing.")
             }
 
             fetch(this.getLocationUrl())
@@ -60,7 +60,7 @@ class location {
                 error: null
             }))
             .catch(err => reject({
-                error: `location could not be retrieved. ${err.message}`
+                error: `Location could not be retrieved. ${err.message}`
             }))
         })
     }
