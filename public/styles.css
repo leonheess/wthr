@@ -32,7 +32,7 @@ a {
 
 body {
     height: 100vh;
-    min-height: 600px;
+    min-height: 500px;
     width: 100vw;
     overflow: hidden;
     position: relative;
