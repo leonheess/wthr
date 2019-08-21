@@ -10,8 +10,10 @@ window.onload = () => {
     document.getElementById('switch').addEventListener('click', event => switchUnit(event.target));
     document.getElementById('locate').addEventListener('click', () => geolocate());
     document.getElementById('submit').addEventListener('click', () => search());
-    document.getElementById('submit').addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') search()
+    document.getElementById('search').addEventListener('keydown', e => {
+        if (e.key === 'Enter') {
+            search();
+        }
     });
     // start inner workings
     connect();
