@@ -56,9 +56,9 @@ function connect() {
             searchEl.value = data.city || searchEl.value;
         }
     });
-    socket.on('connect_error', err => handleErrors(err));
-    socket.on('disconnect', err => handleErrors(err));
-    socket.on('connect_failed', err => handleErrors(err));
+    socket.on('connect_error', handleErrors);
+    socket.on('disconnect', handleErrors);
+    socket.on('connect_failed', handleErrors);
 }
 
 
@@ -92,7 +92,7 @@ function search() {
         fetch('/', {
             method: 'POST',
             body: data
-        }).then(response => handleResponses(response)).catch(err => handleErrors(err));
+        }).then(handleResponses).catch(handleErrors);
     } else {
         alert('No search term entered. Please enter a city or press on the "Locate me!" icon to proceed.');
     }
@@ -122,7 +122,7 @@ function geolocate(suppress = false) {
         fetch('/', {
             method: 'POST',
             body: data
-        }).then(response => handleResponses(response)).catch(err => handleErrors(err));
+        }).then(handleResponses).catch(handleErrors);
     }).catch(err => {
         if (!suppress) {
             handleErrors(err);
