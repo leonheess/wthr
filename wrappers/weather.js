@@ -41,7 +41,7 @@ class weather {
     getWeather() {
         return new Promise((resolve, reject) => {
             if (!weather.isNotNull(this.lat) || !weather.isNotNull(this.long)) {
-                reject("request is incomplete. Longitude or Latitude is missing.")
+                reject("Request is incomplete. Longitude or Latitude is missing.")
             }
 
             console.log(`Request sent: ${this.getUrl()}`);
@@ -57,7 +57,7 @@ class weather {
                 error: null
             }))
             .catch(err => reject({
-                error: `weather could not be retrieved. ${err.message}`
+                error: `Weather could not be retrieved. ${err.message}`
             }))
         })
     }
