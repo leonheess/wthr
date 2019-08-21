@@ -357,6 +357,10 @@ footer {
     font-size: 12px;
 }
 
+footer > a:hover {
+    opacity: 0.7;
+}
+
 @media screen and (max-width: 1000px) {
     #container {
         width: 75%;
