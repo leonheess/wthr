@@ -7,7 +7,10 @@ class weather {
         this.lat = null;
         this.unit = null;
         this.queryArr = ['excludes=currently'];
-        this.getQuery = () => this.queryArr.join('&') + `&units=${this.unit || 'si'}`;
+        this.getQuery = () => {
+            this.queryArr.push(`units=${this.unit || 'si'}`);
+            return this.queryArr.join('&');
+        };
         this.getUrl = () => `https://api.darksky.net/forecast/${this.apiKey}/${this.lat},${this.long}?${this.getQuery()}`;
     }
 
