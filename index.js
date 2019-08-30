@@ -42,6 +42,7 @@ io.on('connection', () => console.log(`Socket.io running → PORT ${server.addre
 // react to post request by client
 app.post('/', upload.none(), async (req, res) => {
     console.log(`Request received: ${JSON.stringify(req.body)}`);
+
     timeout = setTimeout(() => {
         io.emit('update', {error: 'Aborted request due to servers not responding. Please try again later.'});
         res.status(500).end();
@@ -71,6 +72,6 @@ async function retrieveWeather(req) {
         const locationData = await location.searchFor(req.input).getCoords();
         return await weather.coords(locationData.crds).metric(req.metric === 'true').getWeather();
     } else {
-        throw {error: 'Aborted due to unexpected POST-Body'};
+        throw {error: 'Aborted request due to unexpected POST-Body.'};
     }
 }
