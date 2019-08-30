@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 
-class weather {
+class darksky {
     constructor(apiKey) {
         this.apiKey = apiKey;
         this.long = null;
@@ -40,7 +40,7 @@ class weather {
 
     getWeather() {
         return new Promise((resolve, reject) => {
-            if (!weather.isNotNull(this.lat) || !weather.isNotNull(this.long)) {
+            if (!darksky.isNotNull(this.lat) || !darksky.isNotNull(this.long)) {
                 reject("Request is incomplete. Longitude or Latitude is missing.")
             }
 
@@ -63,4 +63,4 @@ class weather {
     }
 }
 
-module.exports = weather;
+module.exports = darksky;

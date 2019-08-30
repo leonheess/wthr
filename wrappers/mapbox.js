@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 const url = 'https://api.mapbox.com/geocoding/v5/mapbox.places';
 
-class location {
+class mapbox {
     constructor(accessToken) {
         this.accessToken = accessToken;
         this.long = null;
@@ -35,21 +35,21 @@ class location {
             fetch(this.getCoordsUrl())
             .then(response => response.json())
             .then(data => resolve({
-                coords: {
+                crds: {
                     lat: data.features[0].center[1],
                     lng: data.features[0].center[0]
                 },
                 error: null
             }))
             .catch(err => reject({
-                error: `Coordinates could not be retrieved. ${err.message}`
+                error: `Coordinates could not be retrieved. ${err.message.includes('center') ? this.searchString + ' doesn\'t seem to be a valid location.' : err.message}`
             }))
         })
     }
 
     getLocation() {
         return new Promise((resolve, reject) => {
-            if (!location.isNotNull(this.lat) || !location.isNotNull(this.long)) {
+            if (!mapbox.isNotNull(this.lat) || !mapbox.isNotNull(this.long)) {
                 reject("Request is incomplete. Longitude or Latitude is missing.")
             }
 
@@ -66,4 +66,4 @@ class location {
     }
 }
 
-module.exports = location;
+module.exports = mapbox;

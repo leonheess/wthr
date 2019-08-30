@@ -1,19 +1,21 @@
 require('dotenv').config({path: __dirname + '/.env'});
 
 const Sentry = require('@sentry/node');
-const weatherWrapper = require('./wrappers/weather');
-const locationWrapper = require('./wrappers/location');
+const darkskyWrapper = require('./wrappers/darksky');
+const mapboxWrapper = require('./wrappers/mapbox');
 const express = require('express');
 
 const app = express();
 const upload = require('multer')();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
-const weather  = new weatherWrapper(process.env.DARK_SKY_API);
-const location = new locationWrapper(process.env.MAPBOX_API);
+const weather = new darkskyWrapper(process.env.DARK_SKY_API);
+const location = new mapboxWrapper(process.env.MAPBOX_API);
+
+let timeout;
 
 // start Sentry
-Sentry.init({ dsn: process.env.SENTRY_KEY });
+Sentry.init({dsn: process.env.SENTRY_KEY});
 
 // start server
 server.listen(process.env.PORT, () => console.log(`Express running → PORT ${server.address().port}`));
@@ -38,33 +40,37 @@ app.get('/', (req, res) => {
 io.on('connection', () => console.log(`Socket.io running → PORT ${server.address().port}`));
 
 // react to post request by client
-app.post('/', upload.none(), (req, res) => {
+app.post('/', upload.none(), async (req, res) => {
     console.log(`Request received: ${JSON.stringify(req.body)}`);
+    timeout = setTimeout(() => {
+        io.emit('update', {error: 'Aborted request due to servers not responding. Please try again later.'});
+        res.status(500).end();
+    }, 5000);
 
-    let weatherPromise;
-    if (req.body.latitude && req.body.longitude) {
-        let crds = {lat: req.body.latitude, lng: req.body.longitude};
-        weatherPromise = new Promise(resolve => location.coords(crds).getLocation()
-        .then(locData => weather.coords(crds).metric(req.body.metric === 'true').getWeather()
-        .then(weatherData => resolve(Object.assign(weatherData, {city: locData.city})))));
-    } else if (req.body.input) {
-        weatherPromise = new Promise(resolve => {
-            location.searchFor(req.body.input).getCoords().then(locData => resolve(weather.coords(locData.coords).metric(req.body.metric === 'true').getWeather()));
-        });
-    } else {
-        weatherPromise = Promise.reject({ error: 'Aborted due to unexpected POST-Body: ' + req.body});
-    }
-
-    weatherPromise.then(weatherData => {
+    try {
+        const weatherData = await retrieveWeather(req.body);
+        clearTimeout(timeout);
         io.emit('update', weatherData);
         console.log(`Answer sent: ${JSON.stringify(weatherData)}`);
-        res.status(204).send({});
-    }, reject => {
-        io.emit('update', reject);
+        res.status(201).send({});
+    } catch (err) {
+        clearTimeout(timeout);
+        io.emit('update', err);
+        console.error(err.error);
         res.status(500).end();
-    }).catch(err => {
-        console.error(err.message);
-        res.status(500).end();
-    });
+    }
 });
 
+async function retrieveWeather(req) {
+    if (req.latitude && req.longitude) {
+        let crds = {lat: req.latitude, lng: req.longitude};
+        const locationData = await location.coords(crds).getLocation();
+        const weatherData = await weather.coords(crds).metric(req.metric === 'true').getWeather();
+        return Object.assign(weatherData, {city: locationData.city});
+    } else if (req.input) {
+        const locationData = await location.searchFor(req.input).getCoords();
+        return await weather.coords(locationData.crds).metric(req.metric === 'true').getWeather();
+    } else {
+        throw {error: 'Aborted due to unexpected POST-Body'};
+    }
+}
