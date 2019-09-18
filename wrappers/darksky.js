@@ -5,13 +5,10 @@ class darksky {
         this.apiKey = apiKey;
         this.long = null;
         this.lat = null;
-        this.unit = null;
+        this.unit = 'si';
         this.queryArr = ['excludes=currently'];
-        this.getQuery = () => {
-            this.queryArr.push(`units=${this.unit || 'si'}`);
-            return this.queryArr.join('&');
-        };
-        this.getUrl = () => `https://api.darksky.net/forecast/${this.apiKey}/${this.lat},${this.long}?${this.getQuery()}`;
+        this.getQuery = () => this.queryArr.join('&');
+        this.getUrl = () => `https://api.darksky.net/forecast/${this.apiKey}/${this.lat},${this.long}?units=${this.unit}&${this.getQuery()}`;
     }
 
     static isNotNull(value) {
