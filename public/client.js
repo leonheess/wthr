@@ -147,6 +147,9 @@ function watch(timezone) {
 function switchUnit(button) {
     metric = !metric;
     button.textContent = metric ? '°C' : '°F';
+    if (searchEl.value) {
+        search();
+    }
 }
 
 // helper functions
