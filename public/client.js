@@ -95,6 +95,7 @@ function search() {
         }).then(handleResponses).catch(handleErrors);
     } else {
         alert('No search term entered. Please enter a city or press on the "Locate me!" icon to proceed.');
+        searchEl.value = '';
     }
 
 }
