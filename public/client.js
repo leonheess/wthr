@@ -82,9 +82,8 @@ function createClouds() {
 
 // post user input
 function search() {
-    displayTemp('Loading<span>.</span><span>.</span><span>.</span>');
-
     if (searchEl.value) {
+        displayTemp('Loading<span>.</span><span>.</span><span>.</span>');
         const data = new FormData();
         data.append('input', searchEl.value);
         data.append('metric', metric);
@@ -95,7 +94,7 @@ function search() {
         }).then(handleResponses).catch(handleErrors);
     } else {
         alert('No search term entered. Please enter a city or press on the "Locate me!" icon to proceed.');
-        searchEl.value = '';
+        tempEl.classList.remove('appeared');
     }
 
 }
@@ -184,5 +183,5 @@ function handleResponses(response) {
 function handleErrors(err) {
     displayTemp(errorTemp);
     searchEl.value = '';
-    console.error(err || 'An unknown error occured.');
+    console.error(err || 'An unknown error occurred.');
 }
