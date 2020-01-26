@@ -30,16 +30,16 @@ function connect() {
     let socket = io.connect(appUrl, {secure: true, rejectUnauthorized: true});
     socket.on('update', data => {
         //console.log(data);
-        if (data.error || !data.text || !data.temp || !data.unit) {
-            handleErrors(data.error)
+        if (data.error || !data.text || data.temp === undefined || !data.unit) {
+            handleErrors(data.error);
         } else {
             // update classes of background according to weather
-            bgEl.className = 'default';
+            bgEl.className = "default";
             watch(data.timezone);
             switch (data.classes) {
-                case 'rain':
-                case 'sleet':
-                    bgEl.classList.add('rain');
+                case "rain":
+                case "sleet":
+                    bgEl.classList.add("rain");
                     break;
                 case 'snow':
                     bgEl.classList.add('snow');
