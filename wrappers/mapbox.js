@@ -7,8 +7,8 @@ class mapbox {
         this.long = null;
         this.lat = null;
         this.searchString = null;
-        this.getCoordsUrl = () => encodeURI(`${url}/${this.searchString}.json?fuzzyMatch=true&access_token=${this.accessToken}`);
-        this.getLocationUrl = () => encodeURI(`${url}/${this.long},${this.lat}.json?types=place&access_token=${this.accessToken}`);
+        this.getCoordsUrl = () => encodeURI(`${url}/${this.searchString}.json?fuzzyMatch=true&language=en&access_token=${this.accessToken}`);
+        this.getLocationUrl = () => encodeURI(`${url}/${this.long},${this.lat}.json?types=place&language=en&access_token=${this.accessToken}`);
     }
 
     static isNotNull(value) {
