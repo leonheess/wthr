@@ -57,10 +57,10 @@ app.post('/', upload.none(), async (req, res) => {
         io.emit("update", weatherData);
         console.log(`All data received. Initial answer sent to client: ${JSON.stringify(weatherData)}. Updater started.`);
 
-        updater = setTimeout(() => {
+        updater = setInterval(() => {
             io.emit("update", weatherData);
             console.log(`Update sent: ${JSON.stringify(weatherData)}`);
-        }, 1000000);
+        }, 100000);
         res.status(201).send({});
     } catch (err) {
         clearTimeout(timeout);

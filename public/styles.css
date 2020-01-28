@@ -277,38 +277,46 @@ input:-webkit-autofill {
     background-color: grey;
 }
 
-#background.rain > .cloud:before, #background.rain > .cloud:after {
-    animation: rain 1s infinite linear;
-    content: '';
-    border-radius: 50%;
-    display: block;
-    height: 6px;
-    width: 3px;
-    opacity: 1;
-    margin-top: 700px;
+#background:before {
+    --skew: -7deg;
+    content: " ";
+    position: absolute;
+    bottom: 0;
+    right: -20%;
+    left: -20%;
+    height: calc(100% + 100px);
+    background: var(--rad) -12px 3px,
+    var(--rad) 17px 0,
+    var(--rad) 6px 12px,
+    var(--rad) 24px 23px,
+    var(--rad) 39px 30px,
+    var(--rad) 5px 43px;
+    background-size: 50px 55px;
+    animation: precipitation .15s linear infinite;
+    transform: skew(var(--skew));
 }
 
-#background.rain > .cloud:after {
-    transform: translate(50px);
+#background.rain:before {
+    --rad: radial-gradient(1px 4px, rgba(255, 255, 255, .1) 100%, transparent 100%);
+    display: inline-block;
+    animation: precipitation .15s linear infinite;
 }
 
-#background.rain > .cloud:nth-child(even):before, #background.rain > .cloud:nth-child(even):after {
-    animation-delay: .3s;
+#background.snow:before {
+    --rad: radial-gradient(2px 3px, rgba(255, 255, 255, .3) 100%, transparent 100%);
+    display: inline-block;
+    animation: precipitation .4s linear infinite;
+}
+
+@keyframes precipitation {
+    to {
+        transform: skew(var(--skew)) translateY(55px);
+    }
 }
 
 @keyframes cloud {
     100% {
         transform: translate(-50px) scale(1.05);
-    }
-}
-
-@keyframes rain {
-    0% {
-        box-shadow: #cccccc 30px 30px, #cccccc 40px 40px, #cccccc 50px 75px, #cccccc 55px 50px, #cccccc 70px 100px, #cccccc 80px 95px, #cccccc 110px 45px, #cccccc 75px 50px, #cccccc 80px 20px, #cccccc 65px 40px, #cccccc 100px 80px, #cccccc 45px 85px, #cccccc 95px 50px, #cccccc 90px 35px;
-    }
-
-    100% {
-        box-shadow: #cccccc 30px 970px, #cccccc 40px 980px, #cccccc 50px 945px, #cccccc 55px 980px, #cccccc 70px 960px, #cccccc 80px 945px, #cccccc 110px 995px, #cccccc 75px 950px, #cccccc 80px 920px, #cccccc 65px 940px, #cccccc 100px 980px, #cccccc 45px 985px, #cccccc 95px 950px, #cccccc 90px 985px;
     }
 }
 

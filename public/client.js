@@ -34,7 +34,6 @@ function connect() {
         } else {
             // update cloud amount
             cloudCover = data.cloudCover || .7;
-            createClouds();
 
             // update classes of background according to weather
             bgEl.className = "default";
@@ -46,11 +45,6 @@ function connect() {
                     break;
                 case "snow":
                     bgEl.classList.add("snow");
-                    break;
-                case "cloudy":
-                case "partly-cloudy-day":
-                case "partly-cloudy-night":
-                    bgEl.classList.add("cloudy");
                     break;
             }
             displayTemp(`${data.text} and about ${data.temp}°${data.unit}`);
@@ -148,7 +142,8 @@ function randomFromIntervalButSpread(min, max, steps) {
 
 function displayTemp(newText) {
     if (tempEl.textContent !== newText) {
-        tempEl.classList.remove('appeared');
+        createClouds();
+        tempEl.classList.remove("appeared");
         setTimeout(() => {
             tempEl.innerHTML = newText;
             tempEl.classList.add('appeared');
