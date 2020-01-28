@@ -37,7 +37,7 @@ class mapbox {
             fetch(this.getCoordsUrl())
                 .then(response => response.json())
                 .then(data => resolve({
-                    city: data.features[0].context[0].text,
+                    city: data.features[0].place_name_en.split(", ").slice(0, -1).filter(t => !/^\d+$/.test(t)).join(", "),
                     crds: {
                         lat: data.features[0].center[1],
                         lng: data.features[0].center[0]

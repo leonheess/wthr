@@ -1,5 +1,5 @@
 let latitude, longitude, bgEl, tempEl, searchEl, metric = true, cloudCover = .7;
-const appUrl = "https://thewthr.app", errorTemp = "Something went wrong :(";
+const appUrl = "localhost:8443", errorTemp = "Something went wrong :(";
 
 window.onload = () => {
     bgEl = document.getElementById("background");
