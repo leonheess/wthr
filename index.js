@@ -12,7 +12,7 @@ const io = require('socket.io')(server);
 const weather = new darkskyWrapper(process.env.DARK_SKY_API);
 const location = new mapboxWrapper(process.env.MAPBOX_API);
 
-let timeout;
+let timeout, updater;
 
 // start Sentry
 Sentry.init({dsn: process.env.SENTRY_KEY});
@@ -50,28 +50,40 @@ app.post('/', upload.none(), async (req, res) => {
 
     try {
         const weatherData = await retrieveWeather(req.body);
+
         clearTimeout(timeout);
-        io.emit('update', weatherData);
-        console.log(`Answer sent: ${JSON.stringify(weatherData)}`);
+        clearInterval(updater);
+
+        io.emit("update", weatherData);
+        console.log(`All data received. Initial answer sent to client: ${JSON.stringify(weatherData)}. Updater started.`);
+
+        updater = setTimeout(() => {
+            io.emit("update", weatherData);
+            console.log(`Update sent: ${JSON.stringify(weatherData)}`);
+        }, 1000000);
         res.status(201).send({});
     } catch (err) {
         clearTimeout(timeout);
-        io.emit('update', err);
+        clearInterval(updater);
+
         console.error(err.error);
+
+        io.emit("update", err);
         res.status(500).end();
     }
 });
 
 async function retrieveWeather(req) {
+    let locationData, weatherData;
     if (req.latitude && req.longitude) {
-        let crds = {lat: req.latitude, lng: req.longitude};
-        const locationData = await location.coords(crds).getLocation();
-        const weatherData = await weather.coords(crds).metric(req.metric === 'true').getWeather();
-        return Object.assign(weatherData, {city: locationData.city});
+        let crds = { lat: req.latitude, lng: req.longitude };
+        locationData = await location.coords(crds).getLocation();
+        weatherData = await weather.coords(crds).metric(req.metric === "true").getWeather();
     } else if (req.input) {
-        const locationData = await location.searchFor(req.input).getCoords();
-        return await weather.coords(locationData.crds).metric(req.metric === 'true').getWeather();
+        locationData = await location.searchFor(req.input).getCoords();
+        weatherData = await weather.coords(locationData.crds).metric(req.metric === "true").getWeather();
     } else {
         throw {error: 'Aborted request due to unexpected POST-Body.'};
     }
+    return Object.assign(weatherData, { city: locationData.city });
 }

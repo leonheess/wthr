@@ -7,8 +7,8 @@ class mapbox {
         this.long = null;
         this.lat = null;
         this.searchString = null;
-        this.getCoordsUrl   = () => `${url}/${this.searchString}.json?types=place&access_token=${this.accessToken}`;
-        this.getLocationUrl = () => `${url}/${this.long},${this.lat}.json?types=place&access_token=${this.accessToken}`;
+        this.getCoordsUrl = () => encodeURI(`${url}/${this.searchString}.json?fuzzyMatch=true&access_token=${this.accessToken}`);
+        this.getLocationUrl = () => encodeURI(`${url}/${this.long},${this.lat}.json?types=place&access_token=${this.accessToken}`);
     }
 
     static isNotNull(value) {
@@ -29,18 +29,21 @@ class mapbox {
     getCoords() {
         return new Promise((resolve, reject) => {
             if (!this.searchString) {
-                reject("request is incomplete. SearchString is empty.")
+                reject("request is incomplete. SearchString is empty.");
             }
 
+            console.log(`Geocoding API request sent: ${this.getCoordsUrl()}`);
+
             fetch(this.getCoordsUrl())
-            .then(response => response.json())
-            .then(data => resolve({
-                crds: {
-                    lat: data.features[0].center[1],
-                    lng: data.features[0].center[0]
-                },
-                error: null
-            }))
+                .then(response => response.json())
+                .then(data => resolve({
+                    city: data.features[0].context[0].text,
+                    crds: {
+                        lat: data.features[0].center[1],
+                        lng: data.features[0].center[0]
+                    },
+                    error: null
+                }))
             .catch(err => reject({
                 error: `Coordinates could not be retrieved. ${err.message.includes('center') ? this.searchString + ' doesn\'t seem to be a valid location.' : err.message}`
             }))
@@ -50,18 +53,20 @@ class mapbox {
     getLocation() {
         return new Promise((resolve, reject) => {
             if (!mapbox.isNotNull(this.lat) || !mapbox.isNotNull(this.long)) {
-                reject("Request is incomplete. Longitude or Latitude is missing.")
+                reject("Request is incomplete. Longitude or Latitude is missing.");
             }
 
+            console.log(`Reverse geocoding API request sent: ${this.getLocationUrl()}`);
+
             fetch(this.getLocationUrl())
-            .then(response => response.json())
-            .then(data => resolve({
-                city: data.features[0].text,
-                error: null
-            }))
-            .catch(err => reject({
-                error: `Location could not be retrieved. ${err.message}`
-            }))
+                .then(response => response.json())
+                .then(data => resolve({
+                    city: data.features[0].text,
+                    error: null
+                }))
+                .catch(err => reject({
+                    error: `Location could not be retrieved. ${err.message}`
+                }));
         })
     }
 }

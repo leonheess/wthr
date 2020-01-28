@@ -258,17 +258,12 @@ input:-webkit-autofill {
     right: 15px;
 }
 
-#background.cloudy > .cloud, #background.rain > .cloud, #background.snow > .cloud {
-    opacity: .5;
-}
-
-
 #background > .cloud {
     width: 900px;
     height: 900px;
     position: absolute;
     background-color: #fff;
-    opacity: 0;
+    opacity: .5;
     transition: opacity .5s;
     border-radius: 50%;
     animation: cloud 10s infinite alternate;

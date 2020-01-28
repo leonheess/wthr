@@ -7,8 +7,8 @@ class darksky {
         this.lat = null;
         this.unit = 'si';
         this.queryArr = ['excludes=currently'];
-        this.getQuery = () => this.queryArr.join('&');
-        this.getUrl = () => `https://api.darksky.net/forecast/${this.apiKey}/${this.lat},${this.long}?units=${this.unit}&${this.getQuery()}`;
+        this.getQuery = () => this.queryArr.join("&");
+        this.getUrl = () => encodeURI(`https://api.darksky.net/forecast/${this.apiKey}/${this.lat},${this.long}?units=${this.unit}&${this.getQuery()}`);
     }
 
     static isNotNull(value) {
@@ -41,7 +41,7 @@ class darksky {
                 reject("Request is incomplete. Longitude or Latitude is missing.")
             }
 
-            console.log(`Request sent: ${this.getUrl()}`);
+            console.log(`Weather API request sent: ${this.getUrl()}`);
 
             fetch(this.getUrl())
             .then(response => response.json())
@@ -51,7 +51,6 @@ class darksky {
                 cloudCover: data.currently.cloudCover,
                 classes: data.currently.icon,
                 text: data.currently.summary,
-                timezone: data.timezone,
                 unit: data.flags.units === "si" ? "C" : "F",
                 error: null
             }))
