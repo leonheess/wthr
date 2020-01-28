@@ -192,6 +192,7 @@ input:-webkit-autofill {
     left: 0;
     right: 0;
     bottom: 0;
+    transition: background .7s;
 }
 
 #background.default, #background.day {
@@ -261,9 +262,6 @@ input:-webkit-autofill {
     opacity: .5;
 }
 
-#background.partly-cloudy > .cloud:nth-child(even) {
-    opacity: .5;
-}
 
 #background > .cloud {
     width: 900px;

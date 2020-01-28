@@ -1,15 +1,15 @@
-let latitude, longitude, bgEl, tempEl, searchEl, metric = true;
-const appUrl = 'https://thewthr.app', errorTemp = 'Something went wrong :(';
+let latitude, longitude, bgEl, tempEl, searchEl, metric = true, cloudCover = .7;
+const appUrl = "localhost:8443", errorTemp = "Something went wrong :(";
 
 window.onload = () => {
-    bgEl = document.getElementById('background');
-    tempEl = document.getElementById('temp');
-    searchEl = document.getElementById('search');
+    bgEl = document.getElementById("background");
+    tempEl = document.getElementById("temp");
+    searchEl = document.getElementById("search");
 
     // init event listeners
-    document.getElementById('switch').addEventListener('click', event => switchUnit(event.target));
-    document.getElementById('locate').addEventListener('click', () => geolocate());
-    document.getElementById('submit').addEventListener('click', () => search());
+    document.getElementById("switch").addEventListener("click", event => switchUnit(event.target));
+    document.getElementById("locate").addEventListener("click", () => geolocate());
+    document.getElementById("submit").addEventListener("click", () => search());
     document.getElementById('search').addEventListener('keydown', e => {
         if (e.key === 'Enter') {
             search();
@@ -17,7 +17,6 @@ window.onload = () => {
     });
     // start inner workings
     connect();
-    watch();
     geolocate(true);
     createClouds();
 };
@@ -33,23 +32,25 @@ function connect() {
         if (data.error || !data.text || data.temp === undefined || !data.unit) {
             handleErrors(data.error);
         } else {
+            // update cloud amount
+            cloudCover = data.cloudCover || .7;
+            createClouds();
+
             // update classes of background according to weather
             bgEl.className = "default";
-            watch(data.timezone);
+            bgEl.classList.add(data.day ? "day" : "night");
             switch (data.classes) {
                 case "rain":
                 case "sleet":
                     bgEl.classList.add("rain");
                     break;
-                case 'snow':
-                    bgEl.classList.add('snow');
+                case "snow":
+                    bgEl.classList.add("snow");
                     break;
-                case 'cloudy':
-                    bgEl.classList.add('cloudy');
-                    break;
-                case 'partly-cloudy-day':
-                case 'partly-cloudy-night':
-                    bgEl.classList.add('partly-cloudy');
+                case "cloudy":
+                case "partly-cloudy-day":
+                case "partly-cloudy-night":
+                    bgEl.classList.add("cloudy");
                     break;
             }
             displayTemp(`${data.text} and about ${data.temp}°${data.unit}`);
@@ -68,7 +69,7 @@ function createClouds() {
     bgEl.querySelectorAll('.cloud').forEach(e => e.remove());
 
     // create new clouds
-    let cloudAmount = Math.ceil(window.innerWidth * 0.013);
+    let cloudAmount = Math.ceil((window.innerWidth * 0.015) * cloudCover);
     let topValues = randomFromIntervalButSpread(-750, -600, cloudAmount);
     let leftValues = randomFromIntervalButSpread(-500, window.innerWidth - 500, cloudAmount);
     for (let i = 0; i < cloudAmount; i++) {
@@ -131,18 +132,6 @@ function geolocate(suppress = false) {
     });
 }
 
-// set time of day
-function watch(timezone) {
-    let timeOfDay = timezone ? changeTimezone(new Date(), timezone).getHours() : new Date().getHours();
-    if (timeOfDay > 6 && timeOfDay < 21) {
-        bgEl.classList.add('day');
-        bgEl.classList.remove('night');
-    } else {
-        bgEl.classList.add('night');
-        bgEl.classList.remove('day');
-    }
-}
-
 // switch units
 function switchUnit(button) {
     metric = !metric;
@@ -155,12 +144,6 @@ function switchUnit(button) {
 // helper functions
 function randomFromIntervalButSpread(min, max, steps) {
     return new Array(steps).fill(0).map((n, i) => Math.floor(Math.random() * ((max - min) / steps + 1) + (i * (max - min)) / steps + min)).sort(() => Math.random() - 0.5);
-}
-
-function changeTimezone(date, ianatz) {
-    return new Date(date.getTime() + date.getTime() - (new Date(date.toLocaleString('en-US', {
-        timeZone: ianatz
-    }))).getTime());
 }
 
 function displayTemp(newText) {
@@ -182,6 +165,29 @@ function handleResponses(response) {
 
 function handleErrors(err) {
     displayTemp(errorTemp);
-    searchEl.value = '';
-    console.error(err || 'An unknown error occurred.');
+    searchEl.value = "";
+    console.error(err || "An unknown error occurred.");
 }
+
+
+/*
+
+function changeTimezone(date, ianatz) {
+    return new Date(date.getTime() + date.getTime() - (new Date(date.toLocaleString('en-US', {
+        timeZone: ianatz
+    }))).getTime());
+}
+
+// set time of day
+function watch(timezone) {
+    let timeOfDay = timezone ? changeTimezone(new Date(), timezone).getHours() : new Date().getHours();
+    if (timeOfDay > 6 && timeOfDay < 20) {
+        bgEl.classList.add('day');
+        bgEl.classList.remove('night');
+    } else {
+        bgEl.classList.add('night');
+        bgEl.classList.remove('day');
+    }
+}
+
+*/

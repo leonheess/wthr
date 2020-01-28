@@ -47,10 +47,12 @@ class darksky {
             .then(response => response.json())
             .then(data => resolve({
                 temp: Math.round(parseInt(data.currently.temperature)),
+                day: data.currently.time > data.daily.data[0].sunriseTime && data.currently.time <= data.daily.data[0].sunsetTime,
+                cloudCover: data.currently.cloudCover,
                 classes: data.currently.icon,
                 text: data.currently.summary,
                 timezone: data.timezone,
-                unit: data.flags.units === 'si' ? 'C' : 'F',
+                unit: data.flags.units === "si" ? "C" : "F",
                 error: null
             }))
             .catch(err => reject({
