@@ -307,7 +307,7 @@ input:-webkit-autofill {
 }
 
 #background.rain:before, #background.rain:after {
-    --rad: radial-gradient(1px 4px, rgba(255, 255, 255, .3) 100%, transparent 100%);
+    --rad: radial-gradient(1px 4px, rgba(255, 255, 255, .2) 100%, transparent 100%);
     animation: precipitation .15s linear infinite;
 }
 

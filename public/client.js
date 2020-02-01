@@ -15,6 +15,7 @@ window.onload = () => {
             search();
         }
     });
+
     // start inner workings
     connect();
     geolocate(true);
@@ -33,7 +34,10 @@ function connect() {
             handleErrors(data.error);
         } else {
             // update cloud amount
-            cloudCover = data.cloudCover || .7;
+            if (data.cloudCover !== cloudCover) {
+                cloudCover = data.cloudCover || .7;
+                createClouds();
+            }
 
             // update classes of background according to weather
             bgEl.className = data.day ? "day" : "night";
@@ -46,7 +50,7 @@ function connect() {
                     bgEl.classList.add("snow");
                     break;
             }
-            displayTemp(`${data.text} and about ${data.temp}°${data.unit}`);
+            display(`${data.text} and about ${data.temp}°${data.unit}`);
             searchEl.value = data.city || searchEl.value;
         }
     });
@@ -77,7 +81,7 @@ function createClouds() {
 // post user input
 function search() {
     if (searchEl.value) {
-        displayTemp('Loading<span>.</span><span>.</span><span>.</span>');
+        display("Loading<span>.</span><span>.</span><span>.</span>");
         const data = new FormData();
         data.append('input', searchEl.value);
         data.append('metric', metric);
@@ -96,7 +100,7 @@ function search() {
 // locate user and post coordinates
 function geolocate(suppress = false) {
     if (!suppress) {
-        displayTemp('Loading<span>.</span><span>.</span><span>.</span>');
+        display("Loading<span>.</span><span>.</span><span>.</span>");
     }
 
     // position getter
@@ -139,26 +143,25 @@ function randomFromIntervalButSpread(min, max, steps) {
     return new Array(steps).fill(0).map((n, i) => Math.floor(Math.random() * ((max - min) / steps + 1) + (i * (max - min)) / steps + min)).sort(() => Math.random() - 0.5);
 }
 
-function displayTemp(newText) {
+function display(newText) {
     if (tempEl.textContent !== newText) {
-        createClouds();
         tempEl.classList.remove("appeared");
         setTimeout(() => {
             tempEl.innerHTML = newText;
-            tempEl.classList.add('appeared');
+            tempEl.classList.add("appeared");
         }, 500);
     }
 }
 
 function handleResponses(response) {
     if (!response.ok) {
-        displayTemp(errorTemp);
+        display(errorTemp);
         throw Error(`Data sent - Network response NOT OK: ${response.statusText}. For additional information see error above.`);
     }
 }
 
 function handleErrors(err) {
-    displayTemp(errorTemp);
+    display(errorTemp);
     searchEl.value = "";
     console.error(err || "An unknown error occurred.");
 }
