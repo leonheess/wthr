@@ -277,34 +277,41 @@ input:-webkit-autofill {
     background-color: grey;
 }
 
-#background:before {
+/* Courtesy of Temani Afif (temani-afif.com) */
+#background:before, #background:after {
     --skew: -7deg;
     content: " ";
     position: absolute;
+    display: inline-block;
     bottom: 0;
     right: -20%;
     left: -20%;
-    height: calc(100% + 100px);
+    height: calc(100% + 200px);
     background: var(--rad) -12px 3px,
     var(--rad) 17px 0,
     var(--rad) 6px 12px,
     var(--rad) 24px 23px,
     var(--rad) 39px 30px,
     var(--rad) 5px 43px;
-    background-size: 50px 55px;
     animation: precipitation .15s linear infinite;
     transform: skew(var(--skew));
 }
 
-#background.rain:before {
-    --rad: radial-gradient(1px 4px, rgba(255, 255, 255, .1) 100%, transparent 100%);
-    display: inline-block;
+#background:before {
+    background-size: 50px 55px;
+}
+
+#background:after {
+    background-size: 70px 61px;
+}
+
+#background.rain:before, #background.rain:after {
+    --rad: radial-gradient(1px 4px, rgba(255, 255, 255, .3) 100%, transparent 100%);
     animation: precipitation .15s linear infinite;
 }
 
 #background.snow:before {
-    --rad: radial-gradient(2px 3px, rgba(255, 255, 255, .3) 100%, transparent 100%);
-    display: inline-block;
+    --rad: radial-gradient(2px 3px, rgba(255, 255, 255, .4) 100%, transparent 100%);
     animation: precipitation .4s linear infinite;
 }
 

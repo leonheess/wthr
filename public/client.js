@@ -1,4 +1,4 @@
-let latitude, longitude, bgEl, tempEl, searchEl, metric = true, cloudCover = .7;
+let latitude, longitude, bgEl, tempEl, searchEl, metric = true, cloudCover = .5;
 const appUrl = "https://thewthr.app", errorTemp = "Something went wrong :(";
 
 window.onload = () => {
@@ -36,8 +36,7 @@ function connect() {
             cloudCover = data.cloudCover || .7;
 
             // update classes of background according to weather
-            bgEl.className = "default";
-            bgEl.classList.add(data.day ? "day" : "night");
+            bgEl.className = data.day ? "day" : "night";
             switch (data.classes) {
                 case "rain":
                 case "sleet":
@@ -63,7 +62,7 @@ function createClouds() {
     bgEl.querySelectorAll('.cloud').forEach(e => e.remove());
 
     // create new clouds
-    let cloudAmount = Math.ceil((window.innerWidth * 0.015) * cloudCover);
+    let cloudAmount = Math.ceil((window.innerWidth * 0.013) * cloudCover);
     let topValues = randomFromIntervalButSpread(-750, -600, cloudAmount);
     let leftValues = randomFromIntervalButSpread(-500, window.innerWidth - 500, cloudAmount);
     for (let i = 0; i < cloudAmount; i++) {

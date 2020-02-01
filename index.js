@@ -55,7 +55,7 @@ app.post('/', upload.none(), async (req, res) => {
         clearInterval(updater);
 
         io.emit("update", weatherData);
-        console.log(`All data received. Initial answer sent to client: ${JSON.stringify(weatherData)}. Updater started.`);
+        console.log(`All data received. Initial response sent: ${JSON.stringify(weatherData)}. Updater started.`);
 
         updater = setInterval(() => {
             io.emit("update", weatherData);
