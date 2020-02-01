@@ -225,7 +225,7 @@ input:-webkit-autofill {
     transition: background-color .7s, box-shadow .7s;
 }
 
-#background.day > #soon {
+#background.default > #soon, #background.day > #soon {
     background-color: #feffdf;
     box-shadow: 0 0 5px 35px rgba(254, 255, 223, 0.2), 0 0 10px 70px rgba(254, 255, 223, 0.2), 0 0 20px 105px rgba(254, 255, 223, 0.2);
 }
@@ -259,6 +259,7 @@ input:-webkit-autofill {
 }
 
 #background > .cloud {
+    z-index: 999;
     width: 900px;
     height: 900px;
     position: absolute;
