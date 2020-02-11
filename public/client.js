@@ -139,7 +139,10 @@ function switchUnit(button) {
 
 // helper functions
 function randomFromIntervalButSpread(min, max, steps) {
-    return new Array(steps).fill(0).map((n, i) => Math.floor(Math.random() * ((max - min) / steps + 1) + (i * (max - min)) / steps + min)).sort(() => Math.random() - 0.5);
+    return new Array(steps)
+        .fill(0)
+        .map((n, i) => Math.floor(Math.random() * ((max - min) / steps + 1) + (i * (max - min)) / steps + min))
+        .sort(() => Math.random() - 0.5);
 }
 
 function display(newText) {
