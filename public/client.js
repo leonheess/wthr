@@ -10,16 +10,17 @@ window.onload = () => {
     document.getElementById("switch").addEventListener("click", event => switchUnit(event.target));
     document.getElementById("locate").addEventListener("click", () => geolocate());
     document.getElementById("submit").addEventListener("click", () => search());
-    document.getElementById('search').addEventListener('keydown', e => {
-        if (e.key === 'Enter') {
+    document.getElementById("search").addEventListener("keydown", e => {
+        if (e.key === "Enter") {
             search();
         }
     });
 
+    createClouds();
+
     // start inner workings
     connect();
     geolocate(true);
-    createClouds();
 };
 
 // check for screen size on every resize
@@ -50,12 +51,12 @@ function connect() {
                     bgEl.classList.add("snow");
                     break;
             }
-            display(`${data.text} and about ${data.temp}°${data.unit}`);
+            display(`${data.text} with about ${data.temp}°${data.unit}`);
             searchEl.value = data.city || searchEl.value;
         }
     });
-    socket.on('connect_error', handleErrors);
-    socket.on('disconnect', handleErrors);
+    socket.on("disconnect", connect);
+    socket.on("connect_error", handleErrors);
     socket.on('connect_failed', handleErrors);
 }
 
@@ -164,9 +165,8 @@ function handleResponses(response) {
 
 function handleErrors(err) {
     display(errorTemp);
-    searchEl.value = "";
     console.error(err || "An unknown error occurred.");
-    connect();
+    searchEl.value = "";
 }
 
 
