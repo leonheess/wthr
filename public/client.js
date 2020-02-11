@@ -30,7 +30,6 @@ window.onresize = () => createClouds();
 function connect() {
     socket = io.connect(appUrl, { secure: true, rejectUnauthorized: true });
     socket.on("update", data => {
-        //console.log(data);
         if (data.error || !data.text || data.temp === undefined || !data.unit) {
             handleErrors(data.error);
         } else {
@@ -55,9 +54,9 @@ function connect() {
             searchEl.value = data.city || searchEl.value;
         }
     });
-    socket.on("disconnect", connect);
     socket.on("connect_error", handleErrors);
-    socket.on('connect_failed', handleErrors);
+    socket.on("disconnect", handleErrors);
+    socket.on("connect_failed", handleErrors);
 }
 
 // create clouds
