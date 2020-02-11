@@ -1,4 +1,4 @@
-let latitude, longitude, bgEl, tempEl, searchEl, metric = true, cloudCover = .5;
+let socket, latitude, longitude, bgEl, tempEl, searchEl, metric = true, cloudCover = .5;
 const appUrl = "https://thewthr.app", errorTemp = "Something went wrong :(";
 
 window.onload = () => {
@@ -27,8 +27,8 @@ window.onresize = () => createClouds();
 
 // connect to backend
 function connect() {
-    let socket = io.connect(appUrl, {secure: true, rejectUnauthorized: true});
-    socket.on('update', data => {
+    socket = io.connect(appUrl, { secure: true, rejectUnauthorized: true });
+    socket.on("update", data => {
         //console.log(data);
         if (data.error || !data.text || data.temp === undefined || !data.unit) {
             handleErrors(data.error);
@@ -166,6 +166,7 @@ function handleErrors(err) {
     display(errorTemp);
     searchEl.value = "";
     console.error(err || "An unknown error occurred.");
+    connect();
 }
 
 
