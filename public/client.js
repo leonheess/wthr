@@ -35,7 +35,7 @@ function connect() {
         } else {
             // update cloud amount
             if (data.cloudCover !== cloudCover) {
-                cloudCover = data.cloudCover || .7;
+                cloudCover = data.cloudCover || .5;
                 createClouds();
             }
 
@@ -58,7 +58,6 @@ function connect() {
     socket.on('disconnect', handleErrors);
     socket.on('connect_failed', handleErrors);
 }
-
 
 // create clouds
 function createClouds() {

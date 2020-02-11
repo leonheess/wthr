@@ -311,6 +311,11 @@ input:-webkit-autofill {
     animation: precipitation .15s linear infinite;
 }
 
+#background.night.rain:before, #background.night.rain:after {
+    --rad: radial-gradient(1px 4px, rgba(255, 255, 255, .1) 100%, transparent 100%);
+    animation: precipitation .15s linear infinite;
+}
+
 #background.snow:before {
     --rad: radial-gradient(2px 3px, rgba(255, 255, 255, .4) 100%, transparent 100%);
     animation: precipitation .4s linear infinite;
