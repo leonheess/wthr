@@ -1,14 +1,15 @@
-require('dotenv').config({path: __dirname + '/.env'});
+const Sentry = require("@sentry/node");
+const darkskyWrapper = require("./wrappers/darksky");
+const mapboxWrapper = require("./wrappers/mapbox");
+const express = require("express");
+const path = require("path");
 
-const Sentry = require('@sentry/node');
-const darkskyWrapper = require('./wrappers/darksky');
-const mapboxWrapper = require('./wrappers/mapbox');
-const express = require('express');
+require("dotenv").config({ path: path.join(__dirname, ".env") });
 
 const app = express();
-const upload = require('multer')();
-const server = require('http').Server(app);
-const io = require('socket.io')(server);
+const upload = require("multer")();
+const server = require("http").Server(app);
+const io = require("socket.io")(server);
 const weather = new darkskyWrapper(process.env.DARK_SKY_API);
 const location = new mapboxWrapper(process.env.MAPBOX_API);
 

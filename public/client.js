@@ -65,7 +65,7 @@ function createClouds() {
     bgEl.querySelectorAll('.cloud').forEach(e => e.remove());
 
     // create new clouds
-    let cloudAmount = Math.ceil((window.innerWidth * 0.013) * cloudCover);
+    let cloudAmount = Math.floor((window.innerWidth * 0.013) * cloudCover);
     let topValues = randomFromIntervalButSpread(-750, -600, cloudAmount);
     let leftValues = randomFromIntervalButSpread(-500, window.innerWidth - 500, cloudAmount);
     for (let i = 0; i < cloudAmount; i++) {
